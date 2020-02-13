@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.core.mail import send_mail
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 # Create your models here.
@@ -78,3 +79,23 @@ class User(AbstractBaseUser):
     @property
     def is_active(self):
         return self.active
+
+class Profile(models.Model):
+    GENDER_CHOICES = (
+        ('m', 'Male'),
+        ('f', 'Female'),
+        ('o', 'Other'),
+    )
+    user            = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_pic     = models.ImageField(_(''), upload_to='user_profile_pic/', blank=True, null=True)
+    phone_no        = models.CharField(max_length=17, blank=True, null=True, unique=True)
+    gender          = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True)
+    confirmed_email = models.BooleanField(default=False)
+    confirmed_date  = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return self.user.get_short_name()
+
+    def set_confirmed_date(self):
+        self.confirmed_date = timezone.now()
+        self.save()
