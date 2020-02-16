@@ -45,7 +45,7 @@ class UserAdminChangeForm(forms.ModelForm):
 
 
 class UserLoginForm(forms.Form):
-    email   = forms.CharField()
+    email       = forms.CharField()
     password    = forms.CharField(widget=forms.PasswordInput)
 
     def clean(self, *args, **kwargs):
@@ -71,7 +71,7 @@ class UserRegisterForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'password1', 'password2', )
+        fields = ('email', 'password1', 'password2', 'first_name', 'last_name',)
 
     def clean_email(self):
         email   = self.cleaned_data.get('email')

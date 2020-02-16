@@ -91,7 +91,7 @@ class Profile(models.Model):
     confirmed_date  = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
-        return str(self.user.email)
+        return self.user.email or ''
 
     def set_confirmed_date(self):
         self.confirmed_date = timezone.now()

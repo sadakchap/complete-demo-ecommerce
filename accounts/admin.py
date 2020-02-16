@@ -20,7 +20,7 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         ('None', {'fields': ('email', 'password',)}),
         ('Personel Information', {'fields': ('first_name', 'last_name',)}),
-        ('Permissions', {'fields': ('admin',)}),
+        ('Permissions', {'fields': ('active', 'staff', 'admin', )}),
     )
     add_fieldsets = (
         (None, {
@@ -31,10 +31,10 @@ class UserAdmin(BaseUserAdmin):
     ordering = ('email',)
     filter_horizontal = ()
 
-# @admin.register(Profile)
-# class UserProfileAdmin(admin.ModelAdmin):
-    # list_display = ['user', 'confirm_email', 'confirmed_date', 'gender', 'phone_no' ]
-    # list_filter = ['confirm_email', 'gender']
+@admin.register(Profile)
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = ['user', 'confirmed_email','confirmed_date', 'gender', 'phone_no']
+    list_filter = ['confirmed_email', 'gender']
 
-admin.site.register(Profile)
+# admin.site.register(Profile)
 admin.site.unregister(Group)
