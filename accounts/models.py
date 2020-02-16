@@ -2,7 +2,6 @@ from django.conf import settings
 from django.db import models
 from django.core.mail import send_mail
 from django.utils import timezone
-from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 # Create your models here.
 
@@ -37,13 +36,13 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-    email       = models.EmailField(_('email address'), unique=True)
-    first_name  = models.CharField(_("First name"), max_length=255, blank=True, null=True)
-    last_name   = models.CharField(_("Last name"), max_length=255, blank=True, null=True)
-    active      = models.BooleanField(_("active"), default=True)
-    staff       = models.BooleanField(_("staff"), default=False)
-    admin       = models.BooleanField(_("admin"), default=False)
-
+    email       = models.EmailField(max_length=255, unique=True)
+    first_name  = models.CharField( max_length=255, blank=True, null=True)
+    last_name   = models.CharField(max_length=255, blank=True, null=True)
+    active      = models.BooleanField( default=True)
+    staff       = models.BooleanField( default=False)
+    admin       = models.BooleanField( default=False)
+    created     = models.DateTimeField(auto_now_add=True)
     #passowrd and last_login are included from AbstractBaseUser class
 
     USERNAME_FIELD = 'email'
@@ -54,9 +53,7 @@ class User(AbstractBaseUser):
         return self.first_name + self.last_name
     
     def get_short_name(self):
-        if self.first_name:
-            return self.first_name
-        return None
+        return self.first_name or ''
     
     def email_user(self, subject, message, **kwargs):
         send_mail(subject, message, settings.EMAIL_HOST_USER,
@@ -87,14 +84,14 @@ class Profile(models.Model):
         ('o', 'Other'),
     )
     user            = models.OneToOneField(User, on_delete=models.CASCADE)
-    profile_pic     = models.ImageField(_(''), upload_to='user_profile_pic/', blank=True, null=True)
+    profile_pic     = models.ImageField(upload_to='user_profile_pic/', blank=True, null=True)
     phone_no        = models.CharField(max_length=17, blank=True, null=True, unique=True)
     gender          = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True)
     confirmed_email = models.BooleanField(default=False)
     confirmed_date  = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
-        return self.user.get_short_name()
+        return str(self.user.email)
 
     def set_confirmed_date(self):
         self.confirmed_date = timezone.now()
