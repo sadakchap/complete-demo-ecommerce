@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 class Category(models.Model):
@@ -12,6 +13,9 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def get_absolute_url(self):
+        return reverse('products:product_list_by_category', args=[self.slug])
 
 
 class Product(models.Model):
@@ -36,3 +40,9 @@ class Product(models.Model):
     @property
     def is_available(self):
         return True if self.stock else False
+    
+    def get_absolute_url(self):
+        return reverse('products:product_list', kwargs={
+            'id': self.id,
+            'slug': self.slug,
+        })

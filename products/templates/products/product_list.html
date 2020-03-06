@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extrastyles %}{% endblock %}
+{% block page_title %} Maa Shop-Products {% endblock %}
+{% block content %}
+    <div class="products-box">
+        <div class="row">
+            {% for product in products %}
+                <div class="item">
+                    <div class="card"  style="width: 18rem;">
+                        <img src="{% if product.image %}{{ product.image.url }}{% endif %}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name|title }}</h5>
+                            <p class="card-text"><small class="text-muted">{{ product.price }}</small></p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
