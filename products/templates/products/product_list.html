@@ -1,21 +1,41 @@
 {% extends "base.html" %}
 {% load static %}
-{% block extrastyles %}{% endblock %}
+{% block extrastyles %}
+    <link rel="stylesheet" href="{% static 'css/products.css' %}">
+{% endblock %}
 {% block page_title %} Maa Shop-Products {% endblock %}
 {% block content %}
-    <div class="products-box">
-        <div class="row">
-            {% for product in products %}
-                <div class="item">
-                    <div class="card"  style="width: 18rem;">
-                        <img src="{% if product.image %}{{ product.image.url }}{% endif %}" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ product.name|title }}</h5>
-                            <p class="card-text"><small class="text-muted">{{ product.price }}</small></p>
+    <div class="wrapper">
+        <nav id="sidebar">
+            <h4>categories</h4>
+            <ul>
+                    <li><a href="{% url 'products:product_list' %}">All</a></li>
+                {% for cat in categories %}
+                    <li><a href="{{ cat.get_absolute_url }}">{{ cat }}</a></li>
+                {% endfor %}
+            </ul>
+        </nav>
+        <div class="content">
+            <div class="products-box">
+                {% if category %} <h4>{{ category.name }} Products </h4>{% endif %}
+                <div class="row">
+                    {% for product in products %}
+                        <div class="item">
+                            <div class="card"  style="width: 20rem;">
+                                <a href="{{ product.get_absolute_url }}">
+                                    <img src="{% if product.image %}{{ product.image.url }}{% endif %}" class="card-img-top product-card-img" alt="{{ product.name}}">
+                                </a>
+                                <div class="card-body">
+                                    <a href="{{ product.get_absolute_url }}">
+                                        <h5 class="card-title product-card-name">{{ product.name|title|truncatewords:7 }}</h5>
+                                    </a>
+                                    <p class="card-text"><small class="text-muted">${{ product.price }}</small></p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}

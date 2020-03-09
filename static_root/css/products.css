@@ -1,0 +1,21 @@
+.wrapper{
+    display: grid;
+    width: 100%;
+    grid-template-columns: 20% 80%;
+}
+.wrapper #sidebar{
+    min-width: 100px;
+    max-width: 100px;
+}
+
+.product-card-img{
+    width: 100%;
+    height: 400px;
+    object-fit: fill;
+}
+.product-card-name{
+    font-size: 1.15em;
+    text-transform: capitalize;
+    font-weight: 400;
+    color: lightslategrey;
+}

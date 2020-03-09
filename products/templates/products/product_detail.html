@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extrastyles %}
+<link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
+{% endblock %}
+{% block page_title %} Maa Shop-Products {% endblock %}
+{% block content %}
+<div class="wrapper">
+    <div class="content">
+        <div class="product-box">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="img-box"><img src="{% if product.image %}{{ product.image.url }}{% endif %}" alt=""></div>
+                </div>
+                <div class="col-lg-9">
+                    <h2 class="product-name">{{ product.name }}</h2>
+                    <p><a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></p>
+                    <p>${{ product.price }}</p>
+                    <p>{{product.desc|linebreaks }}</p>
+                    <button type="submit" class="btn btn-primary">Add to cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -42,7 +42,7 @@ class Product(models.Model):
         return True if self.stock else False
     
     def get_absolute_url(self):
-        return reverse('products:product_list', kwargs={
+        return reverse('products:product_detail', kwargs={
             'id': self.id,
             'slug': self.slug,
         })
