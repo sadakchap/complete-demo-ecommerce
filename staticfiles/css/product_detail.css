@@ -1,3 +1,26 @@
+body{
+	margin: 0;
+	padding: 0;
+}
+#exzoom{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+    width: 500px;
+    z-index: 9999 !important;
+}
+.exzoom .exzoom_preview{
+    margin: 0;
+    position: absolute;
+    top: 0;
+    overflow: hidden;
+    z-index: 999;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    display: none;
+    box-shadow: 0px 0px 5px #aaa, 0px 5px 10px #e6e6e6;
+}
 .product-box{
     margin: 2em 3em;
 }

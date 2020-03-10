@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block extrastyles %}
+<link rel="stylesheet" href="{% static 'css/exzoom/jquery.exzoom.css'%}">
 <link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
 {% endblock %}
 {% block page_title %} Maa Shop-Products {% endblock %}
@@ -9,19 +10,32 @@
     <div class="content">
         <div class="product-box">
             <div class="row">
-				<div class="col-lg-1">
-					<div class="product-image-set" style="display: flex;flex-direction: column;">
-						<img src="{{ product.image.url }}" alt="" class="img-fluid" width="50px" height="50px" style="border: 1px solid #aaa; margin: 10px auto;">
-						{% for image in product.image_set.all %}
-							<img src="{{ image.image.url }}" alt="" class="img-fluid" width="50px" height="50px" style="border: 1px solid #aaa; margin: 10px auto;">
-						{% endfor %}
-					</div>
-				</div>
-                <div class="col-lg-3">
-                    <div class="img-box"><img src="{% if product.image %}{{ product.image.url }}{% endif %}" alt=""></div>
+                <div class="col-lg-6" style="height: 80vh; position: relative;">
+                    <div class="exzoom" id="exzoom">
+                        <!-- Images -->
+                        <div class="exzoom_img_box">
+                            <ul class='exzoom_img_ul'>
+                                <li><img src="{{ product.image.url }}" /></li>
+                                
+                                {% for img in product.image_set.all %}
+                                    <li><img src="{{ img.image.url }}" /></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!-- <a href="https://www.jqueryscript.net/tags.php?/Thumbnail/">Thumbnail</a> Nav-->
+                        <div class="exzoom_nav"></div>
+                        <!-- Nav Buttons -->
+                        <p class="exzoom_btn">
+                            <a href="javascript:void(0);" class="exzoom_prev_btn">
+                                &lt; </a>
+                            <a href="javascript:void(0);" class="exzoom_next_btn"> &gt; </a>
+                        </p>
+                    </div>
+
                 </div>
-                <div class="col-lg-7">
-                    <h2 class="product-name">{{ product.name }}</h2>
+
+                <div class="col-lg-6">
+                    <h4 class="product-name">{{ product.name }}</h4>
                     <p><a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></p>
                     <p>${{ product.price }}</p>
                     <div class="product-desc-box">
@@ -33,4 +47,15 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_scripts %}
+    <script src="{% static 'js/exzoom/jquery.exzoom.js' %}"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#exzoom").exzoom({
+                "autoPlay": false,
+            });
+        });
+    </script>
 {% endblock %}
