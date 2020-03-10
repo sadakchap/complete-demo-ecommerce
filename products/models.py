@@ -46,3 +46,15 @@ class Product(models.Model):
             'id': self.id,
             'slug': self.slug,
         })
+
+class ProductImageSet(models.Model):
+    product     = models.ForeignKey(Product, related_name="image_set", on_delete=models.CASCADE)
+    image       = models.ImageField(upload_to='products/%Y/%m/%d/')
+
+    def __str__(self):
+        return f'{self.product.name} images'
+
+# category.products.all
+# 1 product --- 1 category
+# many product --- 1 category
+# product is connect to foreignKey to category which gives 1 product - 1 category or many product - 1 category

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product
+from .models import Category, Product, ProductImageSet
 from tinymce.widgets import TinyMCE
 from django.db import models
 # Register your models here.
@@ -12,6 +12,10 @@ class CategoryAdmin(admin.ModelAdmin):
     }
 
 
+class ProductImageSetInline(admin.TabularInline):
+    model = ProductImageSet
+    extra = 4
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['name', 'price', 'stock', 'created', 'updated']
@@ -23,3 +27,9 @@ class ProductAdmin(admin.ModelAdmin):
     formfield_overrides = {
         models.TextField: {'widget': TinyMCE()},
     }
+    inlines = [
+        ProductImageSetInline,
+    ]
+
+
+admin.site.register(ProductImageSet)
