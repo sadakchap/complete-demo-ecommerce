@@ -16,7 +16,9 @@
                     <h2 class="product-name">{{ product.name }}</h2>
                     <p><a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></p>
                     <p>${{ product.price }}</p>
-                    <p>{{product.desc|linebreaks }}</p>
+                    <div class="product-desc-box">
+                        {{ product.desc|safe }}
+                    </div>
                     <button type="submit" class="btn btn-primary">Add to cart</button>
                 </div>
             </div>

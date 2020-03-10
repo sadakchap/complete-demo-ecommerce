@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Category, Product
-
+from tinymce.widgets import TinyMCE
+from django.db import models
 # Register your models here.
 
 @admin.register(Category)
@@ -18,4 +19,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_editable = ['price', 'stock']
     prepopulated_fields = {
         'slug': ('name', )
+    }
+    formfield_overrides = {
+        models.TextField: {'widget': TinyMCE()},
     }
