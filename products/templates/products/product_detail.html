@@ -10,6 +10,7 @@
     <div class="content">
         <div class="product-box">
             <div class="row">
+                <!-- images of product -->
                 <div class="col-lg-6" style="height: 80vh; position: relative;">
                     <div class="exzoom" id="exzoom">
                         <!-- Images -->
@@ -31,9 +32,9 @@
                             <a href="javascript:void(0);" class="exzoom_next_btn"> &gt; </a>
                         </p>
                     </div>
-
                 </div>
 
+                <!-- product detail start -->
                 <div class="col-lg-6">
                     <h4 class="product-name">{{ product.name }}</h4>
                     <p><a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></p>
@@ -43,6 +44,7 @@
                     </div>
                     <button type="submit" class="btn btn-primary">Add to cart</button>
                 </div>
+                <!-- product detail end -->
             </div>
         </div>
     </div>
