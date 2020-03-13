@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block extrastyles %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+{% block page_title %}Cart-detail - Maa Shop{% endblock %}
+{% block content %}
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1>Cart detail</h1>
+        <p>{{ cart }}</p>
+    </div>
+    
+</div>
+{% endblock %}
