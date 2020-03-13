@@ -8,8 +8,45 @@
 {% block content %}
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
-        <h1>Cart detail</h1>
-        <p>{{ cart }}</p>
+        <h1>Your Cart detail</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Image</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">quantity</th>
+                    <th scope="col">Remove</th>
+                    <th scope="col">Unit Price</th>
+                    <th scope="col">Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart %}
+                {% with product=item.product %}
+                    <tr>
+                        <th scope="row">
+                            <a href="{{ product.get_absolute_url }}">
+                                <img src="{{ product.image.url }}" alt="" width="50px" height="50px">
+                            </a>
+                        </th>
+                        <td>{{ product.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td><a href="{% url 'cart:cart_remove' product.id %}">Remove</a></td>
+                        <td>${{ item.price}}</td>
+                        <td>${{ item.total_price }}</td>
+                    </tr>
+                {% endwith %}
+                {% endfor %}
+                <tr class="total">
+                    <td>Total:</td>
+                    <td colspan="4" class="text-right">{{ cart.get_total_price }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            <a href="{% url 'products:product_list' %}" class="btn btn-warning">Continue Shopping</a>
+            <a href="#" class="btn btn-success">CheckOut</a>
+        </div>
     </div>
     
 </div>
