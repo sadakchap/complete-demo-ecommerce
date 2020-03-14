@@ -19,7 +19,40 @@
                     <a class="nav-link" href="{% url 'register' %}">Register</a>
                 </li>
             {% endif %}
-            
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'cart:cart_detail' %}">
+                    {% with total_item=cart|length %}
+                        {% if total_item %}
+                            {{ total_item }} item{{ total_item|pluralize }},
+                            ${{ cart.get_total_price }}
+                        {% else %}
+                            Empty
+                        {% endif %}
+                    {% endwith %}
+                </a>
+            </li>
+            <li class="nav-item dropdown dropleft">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Your Cart
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    {% for item in cart %}
+                        {% with product=item.product %}
+                            <a class="dropdown-item" href="{{ product.get_absolute_url }}">
+                                {{ product.name|truncatewords:3}}
+                            </a>
+                            <div class="dropdown-divider"></div>
+                        {% endwith %}
+                    {% endfor %}
+                    <span class="dropdown-item" href="#">
+                        <div class="d-flex justify-content-between">
+                            <span>Total: </span>
+                            <span>${{ cart.get_total_price }}</span>
+                        </div>
+                    </span>
+                </div>
+            </li>
         </ul>
     </div>
 </nav>

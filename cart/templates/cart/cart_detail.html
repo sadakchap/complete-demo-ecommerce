@@ -14,7 +14,7 @@
                 <tr>
                     <th scope="col">Image</th>
                     <th scope="col">Product</th>
-                    <th scope="col">quantity</th>
+                    <th scope="col">Quantity</th>
                     <th scope="col">Remove</th>
                     <th scope="col">Unit Price</th>
                     <th scope="col">Price</th>
@@ -30,22 +30,33 @@
                             </a>
                         </th>
                         <td><a href="{{ product.get_absolute_url }}">{{ product.name|truncatewords:7 }}</a></td>
-                        <td>{{ item.quantity }}</td>
-                        <td><a href="{% url 'cart:cart_remove' product.id %}">Remove</a></td>
+                        <td>
+                            <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                                {% csrf_token %}
+                                {{ item.update_form.quantity }}
+                                {{ item.update_form.update }}
+                                <input type="submit" value="Update" class="btn text-secondary bold">
+                            </form>
+                        </td>
+                        <td>
+                            <a href="{% url 'cart:cart_remove' product.id %}" class="text-danger font-weight-bold">Remove</a>
+                        </td>
                         <td>${{ item.price}}</td>
                         <td>${{ item.total_price }}</td>
                     </tr>
                 {% endwith %}
                 {% endfor %}
                 <tr class="total">
-                    <td>Total:</td>
-                    <td colspan="5" class="text-right">${{ cart.get_total_price }}</td>
+                    <td colspan="2">Total:</td>
+                    <td colspan="4" class="text-right">${{ cart.get_total_price }}</td>
                 </tr>
             </tbody>
         </table>
         <div>
-            <a href="{% url 'products:product_list' %}" class="btn btn-warning">Continue Shopping</a>
-            <a href="#" class="btn btn-success">CheckOut</a>
+            <div class="text-right">
+                <a href="{% url 'products:product_list' %}" class="btn btn-warning">Continue Shopping</a>
+                <a href="#" class="btn btn-success">CheckOut</a>
+            </div>
         </div>
     </div>
     
