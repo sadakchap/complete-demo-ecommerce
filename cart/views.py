@@ -15,14 +15,14 @@ def cart_add(request, product_id):
     form = CartAddProductForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
-        cart.add( product_id=product.id, quantity=cd['quantity'], update_quantity=cd['update'])
+        cart.add( product=product, quantity=cd['quantity'], update_quantity=cd['update'])
     return redirect('cart:cart_detail')
 
 @login_required
-def cart_remove(self, product_id):
+def cart_remove(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
-    cart.remove(product.id)
+    cart.remove(product)
     return redirect('cart:cart_detail')
 
 def cart_detail(request):

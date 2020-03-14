@@ -1,8 +1,22 @@
 {% extends "base.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block extrastyles %}
 <link rel="stylesheet" href="{% static 'css/exzoom/jquery.exzoom.css'%}">
 <link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
+<style>
+    label{
+        display: inline;
+    }
+    span.asteriskField{
+        display: none;
+    }
+    div#div_id_quantity{
+        display: flex; 
+        justify-content: space-between; 
+        align-items: baseline;
+    }
+</style>
 {% endblock %}
 {% block page_title %} Maa Shop-Products {% endblock %}
 {% block content %}
@@ -42,7 +56,20 @@
                     <div class="product-desc-box">
                         {{ product.desc|safe }}
                     </div>
-                    <button type="submit" class="btn btn-primary">Add to cart</button>
+                    <div class="cart-form">
+                        <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-row">
+                                <div class="form-group quantity-field col-md-3 mb-0">
+                                    {{ cart_form.quantity|as_crispy_field }}
+                                    {{ cart_form.update|as_crispy_field }}
+                                </div>
+                                <div class="form-group col-md-8 mb-0">
+                                    <button type="submit" class="btn btn-primary">Add to cart</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
                 <!-- product detail end -->
             </div>
