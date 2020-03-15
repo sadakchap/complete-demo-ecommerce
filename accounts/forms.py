@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from .models import UserAddress
+import re
 
 User = get_user_model()
 
@@ -87,3 +89,51 @@ class UserRegisterForm(forms.ModelForm):
             raise forms.ValidationError('Password must match!')
         return pwrd2
 
+
+def phone_number_validator(regex=None, message=None):
+    message = "Enter a valid number, select country code from dropdown, 10 digits are allowed"
+    if (re.match(r'^\d{3}[-]?\d{3}[-]?\d{4}$', regex)):
+        phone = regex
+        if '-' in phone:
+            phone = ''.join(phone.split('-'))
+        return phone
+    else:
+        raise forms.ValidationError(message)
+
+class UserAddressForm(forms.ModelForm):
+    COUNTRY_CODES = (
+        ('+91', '+91'),
+        ('+1', '+1'),
+    )
+    full_name   = forms.CharField(label="Full Name", error_messages={'required': 'Enter your Full Name.'})
+    country_code = forms.CharField(max_length=4, widget=forms.Select(
+        choices=COUNTRY_CODES), help_text='Choose from dropdown')
+    phone       = forms.CharField(max_length=13, help_text='Enter phone number like "123-456-7890" or "123 456 7890"')
+    pin_code    = forms.CharField(max_length=6, help_text='Enter valid pin code')  
+    line_1      = forms.CharField(label="Street No.", max_length=255)
+    line_2      = forms.CharField(label="Colony, Locality, Village", max_length=255)
+
+    class Meta:
+        model = UserAddress
+        fields = ('full_name','country_code', 'phone', 'pin_code', 'line_1', 'line_2', 'landmark', 'city', 'state', 'address_type')
+    
+    def clean_phone(self):
+        phone = phone_number_validator(self.cleaned_data.get('phone'))
+        cc = self.cleaned_data.get('country_code')
+        phone = cc + ' ' + phone
+        return phone
+    
+    def clean_pin_code(self, value):
+        cc = self.cleaned_data.get('country_code')
+        if len(cc) == 2:
+            # US Zip code has 5 didgits only
+            raw_string = r'^\d[0-9]{5}$'
+            message = 'Enter a valid zip code of 5 digits only!'
+        else:
+            # Indian Pin code has 6 digits only, first number be 0
+            raw_string = r'[1-9][0-9]{5}$'
+            message = 'Enter a valid pin code of 6 digits only!'
+        if (re.match(raw_string, value)):
+            return value
+        else:
+            raise forms.ValidationError(message)

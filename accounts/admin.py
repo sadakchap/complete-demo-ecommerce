@@ -1,9 +1,10 @@
 from django.contrib import admin
-from .models import Profile
+from .models import Profile, UserAddress
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from .forms import UserAdminCreationForm, UserAdminChangeForm
+
 # Register your models here.
 
 User = get_user_model()
@@ -36,5 +37,9 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_display = ['user', 'confirmed_email','confirmed_date', 'gender', 'phone_no']
     list_filter = ['confirmed_email', 'gender']
 
+# @admin.register(UserAddress)
+# class UserAddressAdmin(admin.ModelAdmin):
+#     list_display = ['user', 'ful_name', 'phone', 'pin_code', 'city', 'state']
+#     list_filter = ['created', 'update']
 # admin.site.register(Profile)
 admin.site.unregister(Group)

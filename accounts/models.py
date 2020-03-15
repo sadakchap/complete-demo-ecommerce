@@ -96,3 +96,25 @@ class Profile(models.Model):
     def set_confirmed_date(self):
         self.confirmed_date = timezone.now()
         self.save()
+
+
+class UserAddress(models.Model):
+    ADDRESS_TYPE = [
+        ("H", "Home"),
+        ("O", "Office/Commerial"),
+    ]
+    user        = models.ForeignKey(User, related_name="addresses", on_delete=models.CASCADE)
+    full_name   = models.CharField(max_length=255)
+    phone       = models.CharField(max_length=17) # add validation -- through forms
+    pin_code    = models.CharField(max_length=6)  # add validation -- through forms
+    line_1      = models.CharField(max_length=255)
+    line_2      = models.CharField(max_length=255, null=True, blank=True)
+    landmark    = models.CharField(max_length=255, null=True, blank=True)
+    city        = models.CharField(max_length=255)
+    state       = models.CharField(max_length=255)
+    address_type= models.CharField(max_length=1, choices=ADDRESS_TYPE, blank=True, null=True)
+    created     = models.DateTimeField(auto_now_add=True)
+    updated     = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.user}'s address '{self.city}, {self.state}' "
