@@ -37,9 +37,9 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_display = ['user', 'confirmed_email','confirmed_date', 'gender', 'phone_no']
     list_filter = ['confirmed_email', 'gender']
 
-# @admin.register(UserAddress)
-# class UserAddressAdmin(admin.ModelAdmin):
-#     list_display = ['user', 'ful_name', 'phone', 'pin_code', 'city', 'state']
-#     list_filter = ['created', 'update']
+@admin.register(UserAddress)
+class UserAddressAdmin(admin.ModelAdmin):
+    list_display = ['user', 'full_name', 'phone', 'pin_code', 'city', 'state']
+    list_filter = ['created', 'updated']
 # admin.site.register(Profile)
 admin.site.unregister(Group)
