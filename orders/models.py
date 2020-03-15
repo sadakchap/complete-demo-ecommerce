@@ -13,7 +13,7 @@ class Order(models.Model):
         ordering = ('-created',)
     
     def __str__(self):
-        return f'Order no {self.id}'
+        return f'Order no {self.id} from {self.address.full_name}'
     
     def get_total_cost(self):
         return sum(item.get_cost() for item in self.items.all())

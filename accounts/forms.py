@@ -123,8 +123,9 @@ class UserAddressForm(forms.ModelForm):
         phone = cc + ' ' + phone
         return phone
     
-    def clean_pin_code(self, value):
+    def clean_pin_code(self):
         cc = self.cleaned_data.get('country_code')
+        value = self.cleaned_data.get('pin_code')
         if len(cc) == 2:
             # US Zip code has 5 didgits only
             raw_string = r'^\d[0-9]{5}$'
