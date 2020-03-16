@@ -108,7 +108,7 @@ class UserAddressForm(forms.ModelForm):
     full_name   = forms.CharField(label="Full Name", error_messages={'required': 'Enter your Full Name.'})
     country_code = forms.CharField(max_length=4, widget=forms.Select(
         choices=COUNTRY_CODES), help_text='Choose from dropdown')
-    phone       = forms.CharField(max_length=13, help_text='Enter phone number like "123-456-7890" or "123 456 7890"')
+    phone       = forms.CharField(max_length=13, help_text='Enter phone number like "123-456-7890" ')
     pin_code    = forms.CharField(max_length=6, help_text='Enter valid pin code')  
     line_1      = forms.CharField(label="Street No.", max_length=255)
     line_2      = forms.CharField(label="Colony, Locality, Village", max_length=255)
@@ -133,7 +133,7 @@ class UserAddressForm(forms.ModelForm):
         else:
             # Indian Pin code has 6 digits only, first number be 0
             raw_string = r'[1-9][0-9]{5}$'
-            message = 'Enter a valid pin code of 6 digits only!'
+            message = 'Enter a valid, not starting from 0, pin code of 6 digits only!'
         if (re.match(raw_string, value)):
             return value
         else:

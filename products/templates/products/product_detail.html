@@ -52,6 +52,12 @@
                 <div class="col-lg-6">
                     <h4 class="product-name">{{ product.name }}</h4>
                     <p><a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></p>
+                    <p>{% if product.is_available %}
+                        <span class="text-success">In Stock {{ product.stock }}</span>
+                        {% else %}
+                            <span class="text-danger">Out Of Stock!</span>
+                        {% endif %}
+                    </p>
                     <p>${{ product.price }}</p>
                     <div class="product-desc-box">
                         {{ product.desc|safe }}

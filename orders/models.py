@@ -1,9 +1,14 @@
 from django.db import models
 from products.models import Product
 from accounts.models import UserAddress
+from django.contrib.auth import get_user_model
+
 # Create your models here.
 
+User = get_user_model()
+
 class Order(models.Model):
+    user        = models.ForeignKey(User, related_name='orders', on_delete=models.CASCADE, null=True)
     address     = models.ForeignKey(UserAddress, related_name="orders", on_delete=models.CASCADE)
     created     = models.DateTimeField(auto_now_add=True)
     updated     = models.DateTimeField(auto_now=True)

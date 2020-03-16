@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block extrastyles %}
+{% endblock %}
+{% block page_title %}Order-created - Maa Shop{% endblock %}
+{% block content %}
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <p class="lead">
+            Order No. {{ order.id }}
+            <p>{{ order.address }}</p>
+        </p>
+    </div>
+
+</div>
+{% endblock %}
