@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.views import login_required
 from django.contrib.auth import login, logout, authenticate, get_user_model
-from .forms import UserLoginForm, UserRegisterForm
+from .forms import UserLoginForm, UserRegisterForm, UserAddressForm
 from django.contrib import messages
 
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -9,6 +9,8 @@ from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from .tokens import account_activation_token
+
+from .models import UserAddress
 
 User = get_user_model()
 
@@ -37,7 +39,7 @@ def login_view(request):
 @login_required
 def logout_view(request):
     logout(request)
-    return redirect('login')
+    return redirect('accounts:login')
 
 def register_view(request):
     _next = request.GET.get('next')
@@ -60,7 +62,7 @@ def register_view(request):
             )
             user.email_user(subject, message)
             messages.info(request, "An activation link has been sent to your Email!")
-            return redirect("login")
+            return redirect("accounts:login")
     else:
         form = UserRegisterForm()
     return render(request, "accounts/register.html", {'form': form})
@@ -84,3 +86,40 @@ def activate(request, uid, token):
     else:
         messages.error(request, "Account Activation Failed!")
         return render(request, "accounts/activation_invalid.html")
+
+@login_required
+def add_user_address(request):
+    address_form = UserAddressForm(request.POST or None)
+    if address_form.is_valid():
+        address = address_form.save(commit=False)
+        address.user = request.user
+        address.save()
+        return redirect('/')
+    return render(request, "accounts/address_form.html", {'address_form': address_form})
+
+@login_required
+def edit_user_address(request, adr_id):
+    address = get_object_or_404(UserAddress, id=adr_id)
+    cc, phone = address.phone.split(" ")
+    data = {
+        'country_code': cc,
+        'phone': phone,
+    }
+    address_form = UserAddressForm(request.POST or None, instance=address, initial=data)
+    if address_form.is_valid():
+        address_form.save()
+        return redirect("/") # to list view of address
+    return render(request, "accounts/address_form.html", {'address_form': address_form, 'address': address})
+
+@login_required
+def list_user_address(request):
+    address_list = UserAddress.objects.filter(user=request.user)
+    return render(request, "accounts/address_list.html", {'address_list': address_list})
+
+@login_required
+def delete_user_address(request, adr_id):
+    address = get_object_or_404(UserAddress, id=adr_id)
+    if request.method == 'POST':
+        address.delete()
+        return redirect("/")  # to list view of address
+    return render(request, "accounts/address_delete.html", {'address': address})

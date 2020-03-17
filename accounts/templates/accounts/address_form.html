@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block extrastyles %}
+<link rel="stylesheet" href="#">
+{% endblock %}
+{% block page_title %}Address - Maa Shop{% endblock %}
+{% block content %}
+<div class="jumbotron-jumbotron-fluid">
+    <div class="container mt-5">
+        <form method="post">
+            {% csrf_token %}
+            {{ address_form|crispy }}
+            <button type="submit" class="btn btn-primary">
+                {% if address %}
+                    Edit & Save
+                {% else %}
+                    Add Address
+                {% endif %}
+            </button>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block extrastyles %}
+<link rel="stylesheet" href="#">
+{% endblock %}
+{% block page_title %}Address - Maa Shop{% endblock %}
+{% block content %}
+<div class="jumbotron-jumbotron-fluid">
+    <div class="container mt-5">
+        <div class="address-card m-1 p-1 border">
+            <p class="font-weight-bold">{{ address.full_name|title }}</p>
+            <p>{{ address.line_2 }}</p>
+            <p>{{ address.line_1 }}</p>
+            <p>{{ address.city }}, {{ address.state }}</p>
+            <p>{{ address.pin_code }}</p>
+        </div>
+        <form method="post">
+            
+            {% csrf_token %}
+            <p>Are you sure?</p>
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

@@ -11,11 +11,11 @@
             {% if addresses %}
                 {% for adr in addresses %}
                     <div class="address-card m-1 p-1 border">
-                        <p>Name: {{ adr.full_name }}</p>
-                        <p>{{ adr.line_1 }}</p>
+                        <p class="font-weight-bold">{{ adr.full_name|title }}</p>
                         <p>{{ adr.line_2 }}</p>
+                        <p>{{ adr.line_1 }}</p>
                         <p>{{ adr.city }}, {{ adr.state }}</p>
-                        <p>{{ adr.pin_code }}, {{ adr.phone }}</p>
+                        <p>{{ adr.pin_code }}</p>
                         <a href="{% url 'orders:order_create' adr.id %}">Deliver to address</a>
                         <a href="">Edit</a>
                         <a href="">delete</a>
@@ -26,6 +26,7 @@
         <div class="row mt-5">
             <div class="col-md-8">
                 <form method="post">
+                    <h4>Add new Address</h4><br>
                     {% csrf_token %}
                     {{ address_form|crispy }}
                     <button type="submit" class="btn btn-success">Continue</button>

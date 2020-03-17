@@ -16,16 +16,15 @@ def order_create(request, adr_id=None):
     user = request.user
     addresses = user.addresses.all()
     address = None
-    address_form = UserAddressForm()
+    address_form = UserAddressForm(request.POST or None)
 
     if adr_id:
         address = get_object_or_404(UserAddress, id=adr_id)
-    elif request.method == 'POST':
-        address_form = UserAddressForm(request.POST)
-        if address_form.is_valid():
-            address = address_form.save(commit=False)
-            address.user = request.user
-            address.save()
+    if address_form.is_valid():
+        print('going in')
+        address = address_form.save(commit=False)
+        address.user = request.user
+        address.save()
     # create order when we got address else user might have entered wrong info
     if address:
         order = Order.objects.create(user=user, address=address)

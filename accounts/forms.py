@@ -93,10 +93,7 @@ class UserRegisterForm(forms.ModelForm):
 def phone_number_validator(regex=None, message=None):
     message = "Enter a valid number, select country code from dropdown, 10 digits are allowed"
     if (re.match(r'^\d{3}[-]?\d{3}[-]?\d{4}$', regex)):
-        phone = regex
-        if '-' in phone:
-            phone = ''.join(phone.split('-'))
-        return phone
+        return regex
     else:
         raise forms.ValidationError(message)
 
@@ -128,13 +125,15 @@ class UserAddressForm(forms.ModelForm):
         value = self.cleaned_data.get('pin_code')
         if len(cc) == 2:
             # US Zip code has 5 didgits only
-            raw_string = r'^\d[0-9]{5}$'
+            print("going in")
+            raw_string = r'^[0-9]{5}$'
             message = 'Enter a valid zip code of 5 digits only!'
         else:
             # Indian Pin code has 6 digits only, first number be 0
             raw_string = r'[1-9][0-9]{5}$'
             message = 'Enter a valid, not starting from 0, pin code of 6 digits only!'
         if (re.match(raw_string, value)):
+            print("checking")
             return value
         else:
             raise forms.ValidationError(message)
