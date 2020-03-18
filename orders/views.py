@@ -5,6 +5,7 @@ from accounts.forms import UserAddressForm
 from accounts.models import UserAddress
 from .models import OrderItem, Order
 from cart.cart import Cart
+from .tasks import send_invoice_order
 
 # Create your views here.
 
@@ -39,6 +40,7 @@ def order_create(request, adr_id=None):
 
         # clear the cart
         cart.clear()
+        send_invoice_order.delay(order.id) #launchinf async task
         return render(request, "orders/order_created.html", {'order': order})        
     
     return render(request, "orders/order_form.html", {'address_form': address_form, 'cart': cart, 'addresses': addresses})

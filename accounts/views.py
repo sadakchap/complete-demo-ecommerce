@@ -94,7 +94,7 @@ def add_user_address(request):
         address = address_form.save(commit=False)
         address.user = request.user
         address.save()
-        return redirect('/')
+        return redirect('accounts:address_list')
     return render(request, "accounts/address_form.html", {'address_form': address_form})
 
 @login_required
@@ -108,7 +108,7 @@ def edit_user_address(request, adr_id):
     address_form = UserAddressForm(request.POST or None, instance=address, initial=data)
     if address_form.is_valid():
         address_form.save()
-        return redirect("/") # to list view of address
+        return redirect('accounts:address_list')
     return render(request, "accounts/address_form.html", {'address_form': address_form, 'address': address})
 
 @login_required
@@ -121,5 +121,5 @@ def delete_user_address(request, adr_id):
     address = get_object_or_404(UserAddress, id=adr_id)
     if request.method == 'POST':
         address.delete()
-        return redirect("/")  # to list view of address
+        return redirect('accounts:address_list')
     return render(request, "accounts/address_delete.html", {'address': address})

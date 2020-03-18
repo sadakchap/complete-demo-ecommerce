@@ -17,8 +17,8 @@
                         <p>{{ adr.city }}, {{ adr.state }}</p>
                         <p>{{ adr.pin_code }}</p>
                         <a href="{% url 'orders:order_create' adr.id %}">Deliver to address</a>
-                        <a href="">Edit</a>
-                        <a href="">delete</a>
+                        <a href="{% url 'accounts:address_edit' adr.id %}">Edit</a>
+                        <a href="{% url 'accounts:address_delete' adr.id %}">delete</a>
                     </div>
                 {% endfor %}
             {% endif %}
@@ -29,7 +29,7 @@
                     <h4>Add new Address</h4><br>
                     {% csrf_token %}
                     {{ address_form|crispy }}
-                    <button type="submit" class="btn btn-success">Continue</button>
+                    <button type="submit" class="btn btn-primary">Place Order</button>
                 </form>
             </div>
             <div class="col-md-4">
@@ -45,6 +45,10 @@
                         </li>
                         {% endwith %}
                     {% endfor %}
+                    <li class="d-flex justify-content-between">
+                        <span>Total: </span>
+                        <span>${{ cart.get_total_price }}</span>
+                    </li>
                 </ul>
             </div>
         </div>
