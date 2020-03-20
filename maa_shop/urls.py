@@ -9,6 +9,7 @@ urlpatterns = [
     path('tinymce/', include('tinymce.urls')),
     path('cart/', include('cart.urls', namespace='cart')),
     path('orders/', include('orders.urls', namespace='orders')),
+    path('payments/', include('payments.urls', namespace='payments')),
     path("accounts/", include("accounts.urls", namespace="accounts")),
     path('', include('products.urls', namespace='products')),
 ]
