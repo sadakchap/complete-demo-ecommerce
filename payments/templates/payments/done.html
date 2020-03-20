@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>
+        Your payment has been accepted for order no, {{ order.id }}</h1>
+        <ul>
+            {% for item in order.items.all %}
+                <li>{{ item.quantity }}x {{ item.product.name }}</li>
+            {% endfor %}
+            <li>{{ order.get_total_cost }}</li>
+        </ul>
+        
+    
+</body>
+
+</html>

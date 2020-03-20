@@ -3,7 +3,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.urls import reverse
-from payments.paytm import checksum
 
 from accounts.forms import UserAddressForm
 from accounts.models import UserAddress
@@ -45,23 +44,8 @@ def order_create(request, adr_id=None):
         # clear the cart
         cart.clear()
         send_invoice_order.delay(order.id) #launchinf async task
-
-        # request.session['order_id'] = order.id
-        
-        #request payment to transfer amount
-        params = {
-            "MID": settings.PAYMENT_MERCHANT_ID,
-            "ORDER_ID": str(order.id),
-            "CUST_ID": str(order.user.email),
-            "TXN_AMOUNT": str(order.get_total_cost()),
-            "CHANNEL_ID": "WEB",
-            "INDUSTRY_TYPE_ID": "Retail",
-            "WEBSITE": "WEBSTAGING",
-            "CALLBACK_URL": request.build_absolute_uri(reverse('payments:process'))
-        }
-        params['CHECKSUMHASH'] = checksum.generate_checksum(params, settings.PAYMENT_MERCHANT_KEY)
-        print(request.session.get('order_id'))
-        return render(request, "payments/paytm.html", {'params': params})
+        request.session['order_id'] = order.id
+        return redirect(reverse('payments:process'))
         # return render(request, "orders/order_created.html", {'order': order})        
     
     return render(request, "orders/order_form.html", {'address_form': address_form, 'cart': cart, 'addresses': addresses})
