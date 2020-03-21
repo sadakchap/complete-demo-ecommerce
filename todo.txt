@@ -3,3 +3,4 @@ DONE ---- 1. create Address model for Users
 3. design home page...
 4. check product stock before addding to stock and while creating order also.
 4. option to go to cart at navbar
+5. design payment success and canel html pages
