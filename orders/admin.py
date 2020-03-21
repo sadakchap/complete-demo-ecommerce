@@ -1,5 +1,11 @@
 from django.contrib import admin
 from .models import Order, OrderItem
+from django.urls import reverse
+from django.utils.safestring import mark_safe
+
+def order_detail(obj):
+    reversed_url = reverse('orders:admin_order_detail', args=[obj.id] )
+    return mark_safe(f'<a href="{reversed_url}">Order detail</a>')
 
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
@@ -7,9 +13,10 @@ class OrderItemInline(admin.TabularInline):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['id', 'full_name', 'email_id','get_address', 'get_phone','created', 'updated', 'paid']
+    list_display = ['id', 'paid', 'full_name', 'email_id','get_address', 'get_phone','created', order_detail]
     list_filter = ['paid', 'created', 'updated']
     inlines = [OrderItemInline]
+    list_display_links = None
 
     def full_name(self, obj):
         return obj.address.full_name

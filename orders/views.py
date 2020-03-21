@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.conf import settings
@@ -49,3 +50,9 @@ def order_create(request, adr_id=None):
         # return render(request, "orders/order_created.html", {'order': order})        
     
     return render(request, "orders/order_form.html", {'address_form': address_form, 'cart': cart, 'addresses': addresses})
+
+
+@staff_member_required
+def admin_order_detail(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    return render(request, "orders/admin/order_detail.html", {'order': order})
