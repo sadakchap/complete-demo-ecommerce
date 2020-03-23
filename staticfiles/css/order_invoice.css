@@ -1,0 +1,203 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body{
+    margin: 0;
+    padding: 0;
+}
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    margin-bottom: 2em;
+}
+.company-name{
+    margin: 0;
+    padding: 0;
+    display: block;
+    font-size: x-large;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+.small{
+    padding-left: 10px;
+    font-weight: 300;
+    font-size: small;
+    color: lightslategrey;
+    text-transform: capitalize;
+}   
+.company-contact-detail{
+    display: flex;
+    width: 80%;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: .78rem;
+    font-weight: 400;
+    color: #6a6e74;
+}   
+.company-contact-detail > div{
+    margin: 0 .5em;
+}
+.main{
+    margin: 2em auto 0;
+}
+.main .invoice-detail{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+.main .invoice-detail .cust-adr h4{
+    margin: .5em 0;
+    padding: 0;
+    font-size: .9rem;
+    text-transform: uppercase;
+    color: #0f0c0c;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+.main .invoice-detail .cust-adr > p{
+    padding-left: 10px;
+    font-size: .89rem;
+    color: #2f4f4f;
+}
+.name{
+    color: salmon !important;
+    text-transform: capitalize;
+    letter-spacing: 1px;
+    font-size: .923rem;
+    font-weight: 500;
+}
+.main .invoice-detail .invoice > div{
+    margin: .4em 0;
+    min-width: 200px;
+    font-size: .7rem;
+    font-weight: 500;
+    padding: 5px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-transform: uppercase;
+    color: darkslategray;
+    border-bottom: 1px solid dimgray;
+    border-radius: 2px;
+    background-color: lightsteelblue;
+}
+.product-detail{
+    width: 100%;
+    margin: 3em auto;
+}
+table#products{
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 5px !important;
+}
+#products td, #products th {
+    padding: 15px;
+    text-align: center;
+}
+#products th {
+    box-sizing: border-box;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: lightsteelblue;
+    color: #110f0f;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500 !important;
+    font-size: .89rem;
+    border-bottom: 1px groove #ddd;
+}
+#products tr{
+    color: darkslategray;
+    font-weight: 400 !important;
+    font-size: .78rem;
+    border-bottom: 1px solid #ddd;
+    padding: 20px;
+}
+
+#products tbody tr td:nth-child(1){
+    text-align: left !important;
+}
+.end{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+.notes{
+    align-self: center;
+    font-size: .87rem;
+    color: #171b1b;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.notes > p{
+    font-size: .67rem;
+    color: darkslategray;
+    font-weight: 400;
+    text-transform: lowercase;
+    letter-spacing: 1px;
+    margin: .5em 0;
+    padding-left: 5px;
+}
+.amt-sum{
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+    color: darkslategray;
+}
+.amt-sum > div{
+    display: flex;
+    padding: 5px 13px;
+    justify-content: space-between;
+    width: 200px;
+    align-content: center;
+}
+.total{
+    background-color: lightsteelblue;
+    font-weight: 700 !important;
+    color: darkslategray;
+}
+.footer{
+    margin: 1em 0 0;
+    font-size: .7rem;
+    font-weight: 300;
+    text-align: center;
+    color: darkslategray;
+    letter-spacing: 2px;
+}
+.payment-status{
+    box-sizing: border-box;
+    padding: 10px 20px;
+    letter-spacing: 2px;
+    font-weight: 600;
+    font-size: 3rem;
+    transform: rotate(-15deg);
+}
+.done{
+    border: 10px solid #07d307;
+    color: #11a711;
+}
+.pending{
+    border: 10px solid #d41010;
+    color: #d41010;
+}
+a{
+    color: darkslategray;
+    text-decoration: none;
+    transition: .5s;
+}
+a:hover{
+    color: #0e049e;
+}

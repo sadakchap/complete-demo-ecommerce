@@ -29,7 +29,6 @@ def order_create(request, adr_id=None):
     if adr_id:
         address = get_object_or_404(UserAddress, id=adr_id)
     if address_form.is_valid():
-        print('going in')
         address = address_form.save(commit=False)
         address.user = request.user
         address.save()

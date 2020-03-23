@@ -1,8 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_exempt
-# from django.views.decorators.http import require_POST
 from django.conf import settings
 from django.urls import reverse
+from django.template.loader import render_to_string
+from io import BytesIO
+import weasyprint
+from django.core.mail import EmailMessage
 
 from orders.models import Order
 from .paytm import Checksum
@@ -48,6 +51,21 @@ def handle_paytm_response(request):
                 order.paid = True
                 order.paytm_txn_id = response_dict.get("TXNID")
                 order.save()
+                #sending invoice via email
+                sub = f'Maa Shop- Invoice no- {order.id}'
+                msg = 'Please, find attached the invoice for your recent purchase.'
+                email = EmailMessage(sub, msg, settings.EMAIL_HOST_USER, [order.user.email])
+                # generate pdf
+                html = render_to_string('orders/order_invoice.html', {'order': order})
+                out = BytesIO()
+                weasyprint.HTML(string=html).write_pdf(out, stylesheets=[
+                    weasyprint.CSS(settings.STATIC_ROOT +
+                                   '\\' + 'css/order_invoice.css')
+                ])
+                #attach pdf file to email
+                email.attach(f'order_{order.id}.pdf', out.getvalue(), 'application/pdf')
+                # send email
+                email.send()
                 return redirect('payments:done', order_id=order.id)
             else:
                 return redirect('payments:cancel', resp_msg=response_dict['RESPMSG'])

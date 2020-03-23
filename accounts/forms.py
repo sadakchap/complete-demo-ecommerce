@@ -133,7 +133,6 @@ class UserAddressForm(forms.ModelForm):
             raw_string = r'[1-9][0-9]{5}$'
             message = 'Enter a valid, not starting from 0, pin code of 6 digits only!'
         if (re.match(raw_string, value)):
-            print("checking")
             return value
         else:
             raise forms.ValidationError(message)
