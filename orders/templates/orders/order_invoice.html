@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order detail {{order.id }}</title>
+
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <img src="" alt="" srcset="">
+                <span class="company-name">Maa Shop</span><span class="small">Home shop</span>
+            </div>
+            <div class="company-contact-detail">
+                <div class="phone">
+                    <p>+1234-123-123</p>
+                    <p>+4683-324-234</p>
+                </div>
+                <div class="email">
+                    <p><a href="mailto:info@gmail.com">info@gmail.com</a></p>
+                    <p><a href="https://yourdomain.com" target="_blank">yourdomain.com</a></p>
+                </div>
+                <div class="adr">
+                    <p>4th block, Jaynagar</p>
+                    <p>Banglore, India</p>
+                </div>
+            </div>
+        </div>
+        <hr class="myhr">
+        <div class="main">
+            <div class="invoice-detail">
+                <div class="cust-adr">
+                    {% with address=order.address %}
+                    <h4>Bill to:</h4>
+                    <p class="name">{{ address.full_name}}</p>
+                    <p>{{ address.line_1}}</p>
+                    <p>{{ address.line_2}}</p>
+                    <p>{{ address.city }}, {{ address.state }}</p>
+                    <p>{{ order.user.email }}</p>
+                    {% endwith %}
+                </div>
+                <div class="payment-status {% if order.paid %}done{% else %}pending{% endif %}">
+                    {% if order.paid %}Done{% else %}Pending{% endif %}
+                </div>
+                <div class="invoice">
+                    <div class="invoice-no">
+                        <span>invoice no</span>
+                        <span>{{ order.id }}</span>
+                    </div>
+                    <div class="invoice-date">
+                        <span>invoice date</span>
+                        <span>{{ order.created|date }}</span>
+                    </div>
+                    <div class="invoice-amt">
+                        <span>Amount</span>
+                        <span>${{ order.get_total_cost }}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-detail">
+                <table id="products">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Unit Price</th>
+                            <th>Qty</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order.items.all %}
+                            {% with product=item.product %}
+                            <tr>
+                                <td>{{ product.name }}</td>
+                                <td>${{ product.price }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>${{ item.get_cost }}</td>
+                            </tr>
+                            {% endwith %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="end">
+                <div class="notes">
+                    Notes/Memo
+                    <p>30 day money back guarantee</p>
+                </div>
+                <div class="amt-sum">
+                    <div class="">
+                        <span>Sub-total</span> <span>${{ order.get_total_cost }}</span>
+                    </div>
+                    <div class="">
+                        <span>tax(0%)</span> <span>$00.00</span>
+                    </div>
+                    <div class="total">
+                        <span>Total</span> <span>${{ order.get_total_cost }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="myhr">
+        <div class="footer">
+            Invoice powered @ Maa Shop
+        </div>
+    </div>
+</body>
+</html>

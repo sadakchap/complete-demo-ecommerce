@@ -5,7 +5,11 @@ from django.utils.safestring import mark_safe
 
 def order_detail(obj):
     reversed_url = reverse('orders:admin_order_detail', args=[obj.id] )
-    return mark_safe(f'<a href="{reversed_url}">Order detail</a>')
+    return mark_safe(f'<a href="{reversed_url}">VIEW</a>')
+
+def order_pdf(obj):
+    reversed_url = reverse('orders:admin_order_pdf', args=[obj.id] )
+    return mark_safe(f'<a href="{reversed_url}">PDF</a>')
 
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
@@ -13,7 +17,7 @@ class OrderItemInline(admin.TabularInline):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['id', 'paid', 'full_name', 'email_id','get_address', 'get_phone','created', order_detail]
+    list_display = ['id', 'paid', 'full_name', 'email_id','get_address', 'get_phone','created', order_detail, order_pdf]
     list_filter = ['paid', 'created', 'updated']
     inlines = [OrderItemInline]
     list_display_links = None
