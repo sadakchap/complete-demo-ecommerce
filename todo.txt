@@ -3,6 +3,7 @@ DONE ---- 1. create Address model for Users
 3. design home page...
 4. check product stock before addding to stock and while creating order also.
 4. option to go to cart at navbar
+5. design payment_status html page
 6. On clicking "Add to cart" button it should not redirect to cart:details(use ajax)
 7. design checkout page, and its view function also(break it neccessary)
 8. On order payment successfull show user its transaction id(simply just delete done and canel views and have 
