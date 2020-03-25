@@ -13,6 +13,7 @@ from accounts.models import UserAddress
 from .models import OrderItem, Order
 from cart.cart import Cart
 from .tasks import send_invoice_order
+from coupons.models import Coupon
 
 # Create your views here.
 
@@ -35,6 +36,10 @@ def order_create(request, adr_id=None):
     # create order when we got address else user might have entered wrong info
     if address:
         order = Order.objects.create(user=user, address=address)
+        if cart.coupon:
+            order.coupon = cart.coupon
+            order.discount = cart.coupon.discount
+            order.save()
         for item in cart:
             product = item['product']
             quantity = item['quantity']

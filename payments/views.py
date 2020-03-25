@@ -19,7 +19,8 @@ def payment_process(request):
         "MID": settings.PAYMENT_MERCHANT_ID,
         "ORDER_ID": str(order.id),
         "CUST_ID": str(order.user.email),
-        "TXN_AMOUNT": str(order.get_total_cost()),
+        # "TXN_AMOUNT": str(order.get_total_cost()), # "%.2f" % order.get_total_cost()
+        "TXN_AMOUNT": "%.2f" % order.get_total_cost_after_discount(),
         "CHANNEL_ID": "WEB",
         "INDUSTRY_TYPE_ID": "Retail",
         "WEBSITE": "WEBSTAGING",

@@ -96,8 +96,13 @@
                     <div class="">
                         <span>tax(0%)</span> <span>$00.00</span>
                     </div>
+                    {% if order.coupon %}
+                    <div class="">
+                        <span>{{ order.coupon.code }}({{ order.coupon.discount }}%)</span> <span>-${{ order.get_discount }}</span>
+                    </div>
+                    {% endif %}
                     <div class="total">
-                        <span>Total</span> <span>${{ order.get_total_cost }}</span>
+                        <span>Total</span> <span>${{ order.get_total_cost_after_discount }}</span>
                     </div>
                 </div>
             </div>

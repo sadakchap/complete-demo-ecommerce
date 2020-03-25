@@ -41,13 +41,23 @@
                             <a href="{% url 'products:product_detail' product.id product.slug  %}">
                                 {{ product.name|truncatewords:7 }}
                             </a></span>
-                            <span>${{ item.total_price }}</span>
+                            <span>${{ item.total_price|floatformat:"2" }}</span>
                         </li>
                         {% endwith %}
                     {% endfor %}
+                    {% if cart.coupon %}
                     <li class="d-flex justify-content-between">
-                        <span>Total: </span>
+                        <span>Sub-Total: </span>
                         <span>${{ cart.get_total_price }}</span>
+                    </li>
+                    <li class="d-flex justify-content-between">
+                        <span>{{ cart.coupon.code}}({{ cart.coupon.discount }}%)</span>
+                        <span>-${{ cart.get_discount|floatformat:"2" }}</span>
+                    </li>
+                    {% endif %}
+                    <li class="d-flex justify-content-between">
+                        <span>Total</span>
+                        <span>${{ cart.get_total_price_after_discount|floatformat:"2" }}</span>
                     </li>
                 </ul>
             </div>
