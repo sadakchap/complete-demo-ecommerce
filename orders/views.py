@@ -33,21 +33,31 @@ def order_create(request, adr_id=None):
         address = address_form.save(commit=False)
         address.user = request.user
         address.save()
-    # create order when we got address else user might have entered wrong info
+    # create or update order when we got address else user might have entered wrong info
     if address:
-        order = Order.objects.create(user=user, address=address)
+        order_qs = Order.objects.filter(user=user, paid=False)
+        if order_qs.exists():
+            order = order_qs[0]
+        else:
+            order = Order.objects.create(user=user, address=address)
+
+        for item in cart:
+            product = item['product']
+            quantity = item['quantity']
+            if order.items.filter(product_id=product.id):
+                order_item = order.items.get(product_id=product.id)
+                order_item.quantity += quantity
+                order_item.save()
+            else:
+                OrderItem.objects.create(order=order,product=product, price=item['price'],
+                                        quantity=quantity)
+            # update product stock quantity
+            product.stock -= quantity
+            product.save()
         if cart.coupon:
             order.coupon = cart.coupon
             order.discount = cart.coupon.discount
             order.save()
-        for item in cart:
-            product = item['product']
-            quantity = item['quantity']
-            OrderItem.objects.create(order=order,product=product, price=item['price'],
-                                    quantity=quantity)
-            # update product stock quantity
-            product.stock -= quantity
-            product.save()
 
         # clear the cart
         cart.clear()

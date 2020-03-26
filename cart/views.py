@@ -8,7 +8,6 @@ from coupons.forms import CouponForm
 
 # Create your views here.
 
-@login_required
 @require_POST
 def cart_add(request, product_id):
     cart = Cart(request)

@@ -9,7 +9,7 @@
         <ul class="navbar-nav ml-lg-auto">
             {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'accounts:logout' %}">Orders</a>
+                    <a class="nav-link" href="#">Orders</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a>
@@ -25,7 +25,7 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="{% url 'cart:cart_detail' %}" id="navbarDropdown" role="button" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
-                    Your Cart: {{ cart|length }}
+                    Cart: {{ cart|length }}
                 </a>
                 {% with total_items=cart|length %}
                     {% if total_items %}
