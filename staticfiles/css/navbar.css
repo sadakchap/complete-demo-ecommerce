@@ -3,3 +3,36 @@
     text-transform: uppercase !important;
     letter-spacing: 1px;
 }
+.nav-search{
+    border: none;
+    border-radius: 20px;
+    padding: 5px 20px;
+    box-shadow: 2px 2px 5px 1px #c6ccccc4, -3px -5px 3px 2px #f8f9fa;
+    outline: none;
+    text-align: justify;
+    letter-spacing: 1px;
+    transition: .3s;
+    font-size: .89rem;
+    max-width: 300px;
+    min-width: 200px;
+}
+.nav-search:focus, .nav-search:hover{
+    width: 100%;
+    box-shadow: 1px 1px 2px #349e9ec4, -3px -5px 3px 2px #f8f9fa;
+}
+.input-icon{
+    width: 100%;
+    display: inline-block !important;
+    position: relative;
+}
+.input-icon i {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    transform: translate(-60%, -20%);
+    padding: 5px 0;
+    transition: .5s;
+}
+.input-icon:hover, .input-icon:focus ~ i {
+    color: #349e9ec4;
+}
