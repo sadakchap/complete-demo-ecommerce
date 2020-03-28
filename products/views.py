@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator
 from django.db.models import Q
 
 from .models import Category, Product
@@ -22,6 +23,10 @@ def product_list(request, category_slug=None):
                 Q(desc__icontains=query) | 
                 Q(category__name__icontains=query)
             ).distinct()
+
+    paginator = Paginator(products, 4)
+    page_number = request.GET.get('page')
+    products = paginator.get_page(page_number)
     
     return render(request, 'products/product_list.html', {
         'products': products,
