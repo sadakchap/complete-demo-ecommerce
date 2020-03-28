@@ -24,7 +24,7 @@ def product_list(request, category_slug=None):
                 Q(category__name__icontains=query)
             ).distinct()
 
-    paginator = Paginator(products, 4)
+    paginator = Paginator(products, 2)
     page_number = request.GET.get('page')
     products = paginator.get_page(page_number)
     
