@@ -18,8 +18,6 @@ from cart.cart import Cart
 User = get_user_model()
 
 # Create your views here.
-def home_view(request):
-    return render(request, "home.html", context={})
 
 def login_view(request):
     _next = request.GET.get('next')

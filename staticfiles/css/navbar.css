@@ -1,3 +1,7 @@
+.navbar-brand{
+    font-weight: 900 !important;
+    font-size: 3em !important;
+}
 .nav-link{
     font-size: .78rem !important;
     text-transform: uppercase !important;
