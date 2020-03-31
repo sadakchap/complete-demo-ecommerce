@@ -38,7 +38,7 @@
         {% endfor %}
     </header>
     
-    <div>
+    <div class="main-container">
         {% block content %}
     
         {% endblock %}
@@ -58,6 +58,9 @@
             $('ul li.sub-menu a').click(function (event) {
                 event.preventDefault();
             });
+            // for font-awesome icons, targetting pseudoclass of .fa element
+            $('head').append('<style>.fa:before{font-family:fontAwesome;}</style>');
+            
         });
     </script>
     {% block extra_scripts %}
