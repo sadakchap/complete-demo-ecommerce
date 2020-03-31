@@ -3,7 +3,7 @@
     <div class="nav-box">
         <nav class="nav-left">
             <ul>
-                <li><a href="">home</a></li>
+                <li><a href="/">home</a></li>
                 <li><a href="">about</a></li>
                 <li class="sub-menu">
                     <a href="">catgories</a>
@@ -14,17 +14,62 @@
                         <li><a href="">Link 4</a></li>
                     </ul>
                 </li>
-    
-                <li><a href="">Orders</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="">Orders</a></li>
+                {% endif %}
                 <li><a href="">contact</a></li>
             </ul>
         </nav>
         <nav class="nav-right">
             <ul>
-                <li><a href=""><i class="fa fa-user" aria-hidden="true"></i></a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'accounts:logout' %}"><i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
+                    <li><a href=""><i class="fa fa-heart-o" aria-hidden="true"></i></a></li>
+                {% else %}
+                    <li><a href=""><i class="fa fa-user" aria-hidden="true"></i></a></li>
+                {% endif %}
                 <li><a href=""><i class="fa fa-search" aria-hidden="true"></i></a></li>
-                <li><a href=""><i class="fa fa-heart-o" aria-hidden="true"></i></a></li>
-                <li><a href=""><i class="fa fa-shopping-bag" aria-hidden="true"></i></a></li>
+                <li class="cart-sub-menu"><a href=""><i class="fa fa-shopping-bag" aria-hidden="true"></i></a>
+                    <ul>
+                        <li>
+                            <div>
+                                <span>2 items</span>
+                                <span><a href="{% url 'cart:cart_detail'%}">View Cart</a></span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="cart-item">
+                                <div class="item-detail">
+                                    <a href="" class="product-name">Women Ring</a><br>
+                                    <span>1 X $99.00</span>
+                                </div>
+                                <div class="item-image">
+                                    <a href="" class="cart-item-remove"><i class="fa fa-times"></i></a>
+                                    <img src="/media/products/2020/03/06/watch1.jpg" alt="">
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="cart-item">
+                                <div class="item-detail">
+                                    <a href="" class="product-name">Women Necklace</a><br>
+                                    <span>1 X $99.00</span>
+                                </div>
+                                <div class="item-image">
+                                    <a href="" class="cart-item-remove"><i class="fa fa-times"></i></a>
+                                    <img src="/media/products/2020/03/06/watch1.jpg" alt="">
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="cart-total">
+                            <span>Total:</span>
+                            <span>$126.98</span>
+                            </div>
+                        </li>
+                        <li><a href="{% url 'orders:order_create' %}" class="checkout">checkout</a></li>
+                    </ul>
+                </li>
             </ul>
         </nav>
     </div>

@@ -53,9 +53,18 @@
             });
             $('ul li.sub-menu').click(function(){
                 $(this).siblings().removeClass('active');
+                $(this).parent().parent().siblings().children().children().removeClass('active');
+                $(this).toggleClass('active');
+            });
+            $('ul li.cart-sub-menu').click(function(){
+                $(this).siblings().removeClass('active');
+                $(this).parent().parent().siblings().children().children().removeClass('active');
                 $(this).toggleClass('active');
             });
             $('ul li.sub-menu a').click(function (event) {
+                event.preventDefault();
+            });
+            $('ul li.cart-sub-menu a').click(function (event) {
                 event.preventDefault();
             });
             // for font-awesome icons, targetting pseudoclass of .fa element
