@@ -1,8 +1,8 @@
 DONE ---- 1. create Address model for Users
-2. add Brand field in products model(if needed)
+DONE ---- 2. add Brand field in products model(if needed)
+DONE ---- 4. option to go to cart at navbar
 3. design home page...
 4. check product stock before addding to stock and while creating order also.
-4. option to go to cart at navbar
 5. design payment_status html page
 6. On clicking "Add to cart" button it should not redirect to cart:details(use ajax)
 7. design checkout page, and its view function also(break it neccessary)
@@ -10,4 +10,6 @@ DONE ---- 1. create Address model for Users
 one payment_status.html and show the msg accordingly).
 9. have a button to go "home" page of payment_status.html page
 10. have orders option on navbar 
+11. AJAX request on cart remove for navbar
+12. change Brand charfield to char choicefield for admins
 CANCELLED---5. design payment success and canel html pages

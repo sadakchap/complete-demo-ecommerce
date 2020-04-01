@@ -8,10 +8,9 @@
                 <li class="sub-menu">
                     <a href="">catgories</a>
                     <ul>
-                        <li><a href="">Link 1</a></li>
-                        <li><a href="">Link 2</a></li>
-                        <li><a href="">Link 3</a></li>
-                        <li><a href="">Link 4</a></li>
+                        {% for cat in con_categories %}
+                            <li><a href="{{ cat.get_absolute_url }}">{{ cat.name|title }}</a></li>
+                        {% endfor %}
                     </ul>
                 </li>
                 {% if user.is_authenticated %}
@@ -29,42 +28,38 @@
                     <li><a href=""><i class="fa fa-user" aria-hidden="true"></i></a></li>
                 {% endif %}
                 <li><a href=""><i class="fa fa-search" aria-hidden="true"></i></a></li>
-                <li class="cart-sub-menu"><a href=""><i class="fa fa-shopping-bag" aria-hidden="true"></i></a>
+                <li class="cart-sub-menu"><a href=""><i class="fa fa-shopping-bag" aria-hidden="true"></i>{{ cart|length }}</a>
                     <ul>
                         <li>
                             <div>
-                                <span>2 items</span>
+                                <span>{{ cart|length }} items</span>
                                 <span><a href="{% url 'cart:cart_detail'%}">View Cart</a></span>
                             </div>
                         </li>
-                        <li>
-                            <div class="cart-item">
-                                <div class="item-detail">
-                                    <a href="" class="product-name">Women Ring</a><br>
-                                    <span>1 X $99.00</span>
+                        {% if cart|length > 0 %}
+                            {% for item in cart %}
+                                {% with product=item.product %}
+                                <li>
+                                <div class="cart-item">
+                                    <div class="item-detail">
+                                        <a href="{{ product.get_absolute_url }}" class="product-name">{{ product.name|truncatewords:2 }}</a><br>
+                                        <span>{{item.quantity }} X ${{ product.price }}</span>
+                                    </div>
+                                    <div class="item-image">
+                                        <a href="" class="cart-item-remove"><i class="fa fa-times"></i></a>
+                                        <img src="{{ product.image.url }}" alt="">
+                                    </div>
                                 </div>
-                                <div class="item-image">
-                                    <a href="" class="cart-item-remove"><i class="fa fa-times"></i></a>
-                                    <img src="/media/products/2020/03/06/watch1.jpg" alt="">
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="cart-item">
-                                <div class="item-detail">
-                                    <a href="" class="product-name">Women Necklace</a><br>
-                                    <span>1 X $99.00</span>
-                                </div>
-                                <div class="item-image">
-                                    <a href="" class="cart-item-remove"><i class="fa fa-times"></i></a>
-                                    <img src="/media/products/2020/03/06/watch1.jpg" alt="">
-                                </div>
-                            </div>
-                        </li>
+                                </li>
+                                {% endwith %}
+                                {% endfor %}
+                        {% else %}
+                            <li><div>Your cart is Empty</div></li>
+                        {% endif %}
                         <li>
                             <div class="cart-total">
                             <span>Total:</span>
-                            <span>$126.98</span>
+                            <span>${{ cart.get_total_price }}</span>
                             </div>
                         </li>
                         <li><a href="{% url 'orders:order_create' %}" class="checkout">checkout</a></li>

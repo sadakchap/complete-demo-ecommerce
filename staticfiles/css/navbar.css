@@ -115,11 +115,13 @@
 .header-nav nav ul li.active.cart-sub-menu ul{
     left: auto !important;
     right: 0;
+    padding-bottom: 1.5em;
 }
 
 .header-nav nav ul li.active.cart-sub-menu ul>li{
     padding: 0 30px;
     width: 260px !important;
+    box-sizing: content-box !important;
 }
 .header-nav nav ul li.active.cart-sub-menu ul li:first-child > div{
     padding: 5px 0 !important;
@@ -263,4 +265,11 @@
     .header-nav nav ul li.sub-menu::before{
         color: #fff;
     }
+    
+    .header-nav nav ul li.cart-sub-menu ul,
+    .header-nav nav ul li.active.cart-sub-menu ul{
+        display: none !important;
+    }
+    
+    
 }

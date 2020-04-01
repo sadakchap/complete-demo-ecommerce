@@ -61,15 +61,24 @@
                 $(this).parent().parent().siblings().children().children().removeClass('active');
                 $(this).toggleClass('active');
             });
-            $('ul li.sub-menu a').click(function (event) {
+            $('ul li.sub-menu>a').click(function (event) {
                 event.preventDefault();
             });
-            $('ul li.cart-sub-menu a').click(function (event) {
+            $('ul li.cart-sub-menu>a').click(function (event) {
                 event.preventDefault();
             });
             // for font-awesome icons, targetting pseudoclass of .fa element
             $('head').append('<style>.fa:before{font-family:fontAwesome;}</style>');
             
+        });
+        $(window).scroll(function () {
+            if ($(window).width() > 991) {
+                if($(window).scrollTop() >= 50){
+                    $('.header-nav').css('background-color', '#fff');
+                } else {
+                    $('.header-nav').css('background-color', 'transparent');
+                }
+            }
         });
     </script>
     {% block extra_scripts %}

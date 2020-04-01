@@ -26,6 +26,7 @@ class Product(models.Model):
     image       = models.ImageField(upload_to='products/%Y/%m/%d/', blank=True)
     desc        = models.TextField(blank=True, null=True)
     price       = models.DecimalField(max_digits=10, decimal_places=2)
+    brand       = models.CharField(max_length=50, blank=True, null=True)
     # available   = models.BooleanField(default=True)
     stock       = models.PositiveIntegerField(default=100)
     created     = models.DateTimeField(auto_now_add=True)
