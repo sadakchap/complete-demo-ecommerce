@@ -1,9 +1,53 @@
 {% extends "base.html" %}
 {% load static %}
+{% block extrastyles %}
+	<link rel="stylesheet" href="https://unpkg.com/swiper/css/swiper.min.css">
+	<style>
+		.swiper-slide{
+			width: 200px !important;
+		}
+	</style>
+{% endblock %}
 {% block content %}
-<div class="container">
-    <div class="category-slider">
-        
-    </div>
+
+<div class="container-fluid">
+	<div class="swiper-container">
+		<div class="swiper-wrapper">
+			{% for cat in con_categories %}
+				<div class="swiper-slide">
+					<a href="{{ cat.get_absolute_url }}" class="cat-link">
+					<div class="category-box">
+						<div class="cat-image"><img src="{% if cat.image %}{{ cat.image.url }}{% else %}media/products/2020/03/06/watch1.jpg{% endif %}" alt=""></div>
+						<div class="cat-detail">
+							<div class="cat-name">{{ cat.name }}</div>
+							<div class="cat-products">{{ cat.products.count }} products</div>
+						</div>
+					</div>
+					</a>
+				</div>
+			{% endfor %}
+		</div>
+		<div class="swiper-pagination"></div>
+	</div>
 </div>
+
+	
+
+{% endblock %}
+{% block extra_scripts %}
+	<script src="https://unpkg.com/swiper/js/swiper.min.js"></script>
+	<script>
+		var swiper = new Swiper('.swiper-container', {
+			slidesPerView: 6,
+			spaceBetween: 15,
+			pagination: {
+				el: '.swiper-pagination',
+				clickable: true,
+			},
+			autoplay: {
+				delay: 2500,
+				disableOnInteraction: false,
+			},
+		});
+	</script>
 {% endblock %}

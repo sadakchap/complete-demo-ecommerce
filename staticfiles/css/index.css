@@ -1,0 +1,42 @@
+.cat-link,
+.cat-link:hover{
+  text-decoration: none;
+  display: inline-block;
+}
+.category-box{
+    width: 200px;
+    padding: 5px;
+    margin-bottom: 3em;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 2px #eee;
+}
+.cat-image{
+    width: 100%;
+    height: 160px;
+    background: #cbccce;
+    transition: .5s;
+}
+.cat-image img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+.cat-detail{
+  margin-top: .5em;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+.cat-detail .cat-name{
+    color: #000;
+    font-size: .9rem;
+    font-weight: 500;
+}
+.cat-detail .cat-products{
+    color: #5a5a5a;
+    font-size: .7rem;
+    font-weight: 300;
+}
+
