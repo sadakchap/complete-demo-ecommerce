@@ -9,7 +9,8 @@ from cart.forms import CartAddProductForm
 
 
 def home_view(request):
-    return render(request, "index.html", context={})
+    product_list = Product.objects.all()
+    return render(request, "index.html", context={'product_list': product_list})
     
 def product_list(request, category_slug=None):
     category = None
