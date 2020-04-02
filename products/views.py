@@ -9,8 +9,9 @@ from cart.forms import CartAddProductForm
 
 
 def home_view(request):
-    product_list = Product.objects.all()
-    return render(request, "index.html", context={'product_list': product_list})
+    product_list = Product.objects.order_by('-discount_percent')
+    products_on_sale = [prod for prod in product_list if prod.discount_percent]
+    return render(request, "index.html", context={'products_on_sale': products_on_sale})
     
 def product_list(request, category_slug=None):
     category = None

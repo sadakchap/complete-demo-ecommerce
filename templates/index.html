@@ -39,14 +39,14 @@
 		<p class="sub-title">Check all our products on sale</p>
 	</div>
 	<div class="row">
-		{% for product in product_list %}
+		{% for product in products_on_sale %}
 		<div class="col-6 col-md-4 col-lg-3">
 			<div class="product-default product">
 				<div class="product-image">
 					<a href="{{ product.get_absolute_url }}" class="product-image-anchor">
 						<img src="{{ product.image.url }}" alt="">
 					</a>
-					<div class="discount-label">27% Off</div>
+					<div class="discount-label">{{ product.discount_percent }}% Off</div>
 					<div class="add-to-cart-btn-icon"><a href=""><i class="fa fa-shopping-bag" aria-hidden="true"></i></a></div>
 					<div class="quick-view-btn"><a href="">Quick view</a></div>
 				</div>
@@ -65,8 +65,8 @@
 						<span class="fa fa-star"></span>
 					</div>
 					<div class="product-price">
-						<span class="old-price">$59.00</span>
-						<span class="discount-price">${{ product.price }}</span>
+						<span class="old-price">${{ product.price }}</span>
+						<span class="discount-price">${{ product.get_price }}</span>
 					</div>
 				</div>
 			</div>

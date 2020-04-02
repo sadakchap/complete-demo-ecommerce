@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from decimal import Decimal
 
 # Create your models here.
 class Category(models.Model):
@@ -31,6 +32,7 @@ class Product(models.Model):
     stock       = models.PositiveIntegerField(default=100)
     created     = models.DateTimeField(auto_now_add=True)
     updated     = models.DateTimeField(auto_now=True)
+    discount_percent = models.PositiveIntegerField(blank=True, null=True)
 
     class Meta:
         ordering = ('name',)
@@ -48,6 +50,14 @@ class Product(models.Model):
             'id': self.id,
             'slug': self.slug,
         })
+    
+    def get_price(self):
+        if self.discount_percent:
+            return (self.price )- self.get_discount_amount()
+        return self.price
+    
+    def get_discount_amount(self):
+        return Decimal("{0:.2f}".format((self.price * self.discount_percent) / 100))
 
 class ProductImageSet(models.Model):
     product     = models.ForeignKey(Product, related_name="image_set", on_delete=models.CASCADE)
