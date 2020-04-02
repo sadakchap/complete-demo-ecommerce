@@ -2,15 +2,15 @@
 {% load static %}
 {% block extrastyles %}
 	<link rel="stylesheet" href="https://unpkg.com/swiper/css/swiper.min.css">
-	<style>
-		.swiper-slide{
-			width: 200px !important;
-		}
-	</style>
 {% endblock %}
 {% block content %}
 
+<!-- category slider start -->
 <div class="container-fluid">
+	<div class="heading-text">
+		<h3>Shop by Category</h3>
+		<p class="sub-title">Browse in all our categories</p>
+	</div>
 	<div class="swiper-container">
 		<div class="swiper-wrapper">
 			{% for cat in con_categories %}
@@ -30,15 +30,31 @@
 		<div class="swiper-pagination"></div>
 	</div>
 </div>
+<!-- category slider start -->
 
-	
+<!-- sale products start -->
+<div class="container-fluid">
+	<div class="heading-text">
+		<h3>Products on sale</h3>
+		<p class="sub-title">Check all our products on sale</p>
+	</div>
+	<div class="row">
+		<div class="col-6 col-md-4 col-lg-3 col-xl-2">
+			<div class="product-default product">
+				
+			</div>
+		</div>
+	</div>
+</div>
+<!-- sale products end -->
+
 
 {% endblock %}
 {% block extra_scripts %}
 	<script src="https://unpkg.com/swiper/js/swiper.min.js"></script>
 	<script>
 		var swiper = new Swiper('.swiper-container', {
-			slidesPerView: 6,
+			slidesPerView: 'auto',
 			spaceBetween: 15,
 			pagination: {
 				el: '.swiper-pagination',

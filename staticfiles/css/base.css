@@ -9,4 +9,11 @@ body{
     padding: 0;
     padding-top: 90px !important;
 }
-
+.container-fluid{
+    padding: 0 100px !important;
+}
+@media (max-width: 991px){
+    .container-fluid{
+        padding: 0 10px !important;
+    }
+}

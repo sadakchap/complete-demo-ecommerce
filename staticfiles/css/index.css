@@ -1,3 +1,15 @@
+.swiper-slide{
+    width: 200px !important;
+}
+.heading-text h3{
+    font-size: 1.5rem;
+    color: #000;
+    text-transform: capitalize;
+}
+.heading-text p.sub-title{
+    font-size: .9rem;
+    color: #5a5a5a;
+}
 .cat-link,
 .cat-link:hover{
   text-decoration: none;
