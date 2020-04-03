@@ -38,13 +38,18 @@ def cart_detail(request):
     return render(request, "cart/cart_detail.html", {'cart': cart, 'coupon_form': coupon_form})
 
 
-def cart_add_ajax(request, product_id):
+@require_POST
+def cart_add_ajax(request):
     data = {}
     cart = Cart(request)
+    product_id = request.POST.get("product_id")
     try:
         product = Product.objects.get(id=product_id)
     except Product.DoesNotExist:
         product = None
+        data['added'] = 'ko'
+        data['error_message'] = 'product does not exists'
+        return JsonResponse(data, safe=False)
     
     if product:
         update_quan = cart.item_in_cart(product_id)
@@ -54,14 +59,34 @@ def cart_add_ajax(request, product_id):
                  quantity=quantity, update_quantity=update_quan)
         data['added'] = 'ok'
     
-    data['added_item'] = {
-        'cart_item_product_id': str(product.id),
-        'product_name': str(product.name),
-        'product_url': str(product.get_absolute_url()),
-        'product_image_url': str(product.image.url),
-        'quantity': str(quantity),
-        'price': str(product.price)
-    }
-    data['cart_total'] = str(cart.get_total_price())
-    data['cart_length'] = str(len(cart))
-    return JsonResponse(data, safe=False)
+        data['added_item'] = {
+            'cart_item_product_id': str(product.id),
+            'product_name': " ".join(str(product.name).split()[:2]) + " ...",
+            'product_url': str(product.get_absolute_url()),
+            'product_image_url': str(product.image.url),
+            'quantity': str(quantity),
+            'price': str(product.get_price())
+        }
+        data['cart_total'] = str(cart.get_total_price())
+        data['cart_length'] = str(len(cart))
+        return JsonResponse(data, safe=False)
+
+@require_POST
+def cart_remove_ajax(request):
+    data = {}
+    cart = Cart(request)
+    product_id = request.POST.get("product_id")
+    try:
+        product = Product.objects.get(id=product_id)
+    except Product.DoesNotExist:
+        product = None
+        data['removed'] = 'ko'
+        data['error_message'] = 'product doest not exist'
+        return JsonResponse(data, safe=False)
+    if product:
+        cart.remove(product)
+        data['removed'] = 'ok'
+        data['cart_item_product_id'] = str(product.id)
+        data['cart_total'] = str(cart.get_total_price())
+        data['cart_length'] = str(len(cart))
+        return JsonResponse(data, safe=False)
