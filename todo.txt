@@ -10,6 +10,6 @@ DONE ---- 4. option to go to cart at navbar
 one payment_status.html and show the msg accordingly).
 9. have a button to go "home" page of payment_status.html page
 10. have orders option on navbar 
-11. AJAX request on cart remove for navbar
+11. AJAX request on cart remove, add , update for navbar
 12. change Brand charfield to char choicefield for admins
 CANCELLED---5. design payment success and canel html pages

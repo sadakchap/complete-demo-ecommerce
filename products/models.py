@@ -53,7 +53,7 @@ class Product(models.Model):
     
     def get_price(self):
         if self.discount_percent:
-            return (self.price )- self.get_discount_amount()
+            return self.price - self.get_discount_amount()
         return self.price
     
     def get_discount_amount(self):
