@@ -16,6 +16,11 @@
         justify-content: space-between; 
         align-items: baseline;
     }
+    .old-price{
+        font-size: .8rem;
+        text-decoration: line-through;
+        color: #5a5a5a;
+    }
 </style>
 {% endblock %}
 {% block page_title %} Maa Shop-Products {% endblock %}
@@ -58,7 +63,14 @@
                             <span class="text-danger">Out Of Stock!</span>
                         {% endif %}
                     </p>
-                    <p>${{ product.price }}</p>
+                    <p>
+                        {% if product.discount_percent %}
+                        <span class="old-price">${{ product.price }}</span>
+                        <span class="new-price">${{ product.get_price }}</span>
+                        {% else %}
+                        <span class="price">${{ product.price }}</span>
+                        {% endif %}
+                    </p>
                     <div class="product-desc-box">
                         {{ product.desc|safe }}
                     </div>
@@ -71,8 +83,10 @@
                                     {{ cart_form.update|as_crispy_field }}
                                 </div>
                                 <div class="form-group col-md-8 mb-0">
-                                    <button type="submit" class="btn btn-primary">Add to cart</button>
+                                    <button type="submit" class="btn btnD1"><i class="fa fa-shopping-bag" aria-hidden="true"></i> Add to cart</button>
+                                    <a href="#" class="btn btnD1 px-3"><i class="fa fa-heart"></i></a>
                                 </div>
+
                             </div>
                         </form>
                     </div>

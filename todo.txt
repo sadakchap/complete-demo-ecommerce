@@ -12,4 +12,6 @@ one payment_status.html and show the msg accordingly).
 10. have orders option on navbar 
 11. AJAX request on cart remove, add , update for navbar
 12. change Brand charfield to char choicefield for admins
+13. POst ajax request 4 adding items to cart
+14. django serialize django model object
 CANCELLED---5. design payment success and canel html pages

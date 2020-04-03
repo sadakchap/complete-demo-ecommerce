@@ -17,7 +17,7 @@ class Cart(object):
         if product_id not in self.cart:
             self.cart[product_id] = {
                 'quantity': 0,
-                'price': str(product.price)
+                'price': str(product.get_price())
             }
         if update_quantity:
             self.cart[product_id]['quantity'] = quantity
@@ -48,6 +48,14 @@ class Cart(object):
             item['total_price'] = item['price'] * item['quantity']
             yield item
     
+    def item_in_cart(self, product_id):
+        if str(product_id) in self.cart.keys():
+            return True
+        return False
+    
+    def item_quantity_in_cart(self,product_id):
+        return self.cart[str(product_id)]['quantity'] if self.item_in_cart(product_id) else 0
+
     def __len__(self):
         return sum(item['quantity'] for item in self.cart.values())
     

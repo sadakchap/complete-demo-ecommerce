@@ -28,8 +28,12 @@
                     <li><a href=""><i class="fa fa-user" aria-hidden="true"></i></a></li>
                 {% endif %}
                 <li><a href=""><i class="fa fa-search" aria-hidden="true"></i></a></li>
-                <li class="cart-sub-menu"><a href=""><i class="fa fa-shopping-bag" aria-hidden="true"></i>{{ cart|length }}</a>
-                    <ul>
+                <li class="cart-sub-menu">
+                    <a href="">
+                        <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                        <span id="nav-cart-length">{{ cart|length }}</span>
+                    </a>
+                    <ul id="nav-cart-list">
                         <li>
                             <div>
                                 <span>{{ cart|length }} items</span>
@@ -40,16 +44,18 @@
                             {% for item in cart %}
                                 {% with product=item.product %}
                                 <li>
-                                <div class="cart-item">
-                                    <div class="item-detail">
-                                        <a href="{{ product.get_absolute_url }}" class="product-name">{{ product.name|truncatewords:2 }}</a><br>
-                                        <span>{{item.quantity }} X ${{ product.price }}</span>
+                                    <div class="cart-item" id="cart-item-{{ product.id }}">
+                                        <div class="item-detail">
+                                            <a href="{{ product.get_absolute_url }}" class="product-name">
+                                                {{ product.name|truncatewords:2 }}
+                                            </a><br>
+                                            <span>{{ item.quantity }} x ${{ product.get_price }}</span>
+                                        </div>
+                                        <div class="item-image">
+                                            <a href="" class="cart-item-remove"><i class="fa fa-times"></i></a>
+                                            <img src="{{ product.image.url }}" alt="">
+                                        </div>
                                     </div>
-                                    <div class="item-image">
-                                        <a href="" class="cart-item-remove"><i class="fa fa-times"></i></a>
-                                        <img src="{{ product.image.url }}" alt="">
-                                    </div>
-                                </div>
                                 </li>
                                 {% endwith %}
                                 {% endfor %}
@@ -59,7 +65,7 @@
                         <li>
                             <div class="cart-total">
                             <span>Total:</span>
-                            <span>${{ cart.get_total_price }}</span>
+                            <span id="nav-cart-total">${{ cart.get_total_price }}</span>
                             </div>
                         </li>
                         <li><a href="{% url 'orders:order_create' %}" class="checkout">checkout</a></li>
@@ -71,4 +77,20 @@
     <div class="menu-toggle">
         <i class="fa fa-bars" aria-hidden="true"></i>
     </div>
+</div>
+<div id="new-nav-cart-item">
+    <li>
+        <div class="cart-item" id="cart-item-{{ product.id }}" style="display: none;">
+            <div class="item-detail">
+                <a href="{{ product.get_absolute_url }}" class="product-name">
+                    {{ product.name|truncatewords:2 }}
+                </a><br>
+                <span>{{ item.quantity }} x ${{ product.get_price }}</span>
+            </div>
+            <div class="item-image">
+                <a href="" class="cart-item-remove"><i class="fa fa-times"></i></a>
+                <img src="{{ product.image.url }}" alt="">
+            </div>
+        </div>
+    </li>
 </div>
