@@ -83,10 +83,14 @@ def cart_remove_ajax(request):
         data['removed'] = 'ko'
         data['error_message'] = 'product doest not exist'
         return JsonResponse(data, safe=False)
-    if product:
+    if product and cart.item_in_cart(product.id):
         cart.remove(product)
         data['removed'] = 'ok'
         data['cart_item_product_id'] = str(product.id)
         data['cart_total'] = str(cart.get_total_price())
         data['cart_length'] = str(len(cart))
+        return JsonResponse(data, safe=False)
+    else:
+        data['removed'] = 'ko'
+        data['error_message']='Item not present in cart'
         return JsonResponse(data, safe=False)

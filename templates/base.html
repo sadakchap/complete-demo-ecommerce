@@ -101,42 +101,41 @@
             // for font-awesome icons, targetting pseudoclass of .fa element
             $('head').append('<style>.fa:before{font-family:fontAwesome;}</style>');
 
-            $(".nav-cart-item-remove").click(function(e){
+            $("#nav-cart-list").on("click", ".nav-cart-item-remove", function(e){
                 e.preventDefault();
-                var product_id = $(this).data("product-id");
-
+                var product_id = parseInt($(this).data("product-id"));
                 $.post({
                     url: "{% url 'cart:cart_remove_ajax' %}",
-                    data:{
+                    data: {
                         'product_id': product_id,
                     },
                     dataType: 'json',
-                    success: function(data){
-                        if(data.removed=='ok'){
+                    success: function (data) {
+                        if (data.removed == 'ok') {
                             var itemDiv = $("#nav-cart-list").find("#cart-item-" + data.cart_item_product_id);
                             itemDiv.parent().remove();
                             $('#nav-cart-length').text(data.cart_length);
                             $('#nav-cart-total').text('$' + data.cart_total);
-                            $("#nav-cart-total-items").text(data.cart_length+ " items");
-                            
-                            
+                            $("#nav-cart-total-items").text(data.cart_length + " items");
 
-                            if($("#nav-cart-list").children().length<=3){
+
+
+                            if ($("#nav-cart-list").children().length <= 3) {
                                 $("#nav-cart-list").children().last().prev().before('<li id="empty-cart"><div>Your cart is Empty</div></li>');
-                            }else{
+                            } else {
                                 $("#nav-cart-list").find('#empty-cart').remove();
                                 console.log('removing empty cart list');
                             }
 
                             alert('Item removed from cart');
-                        }else{
+                        } else {
                             alert(data.error_message);
                         }
                     }
-                })
-            });
-            
+                });
+            });            
         });
+        
         $(window).scroll(function () {
             if ($(window).width() > 991) {
                 if($(window).scrollTop() >= 50){

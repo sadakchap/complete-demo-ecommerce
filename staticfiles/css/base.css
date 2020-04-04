@@ -10,7 +10,7 @@ body{
     padding-top: 90px !important;
 }
 .container-fluid{
-    padding: 0 100px !important;
+    padding: 2em 100px !important;
 }
 
 .btnD1{
@@ -22,7 +22,7 @@ body{
     color: #000;
     border-radius: 0 !important;
     font-size: .8rem;
-    transition: .5s linear;
+    transition: .3s linear;
 }
 /* .btnD1::before{
     content: '';
@@ -45,6 +45,6 @@ body{
 } */
 @media (max-width: 991px){
     .container-fluid{
-        padding: 0 10px !important;
+        padding: 2em 10px !important;
     }
 }

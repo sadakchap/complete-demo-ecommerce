@@ -32,6 +32,7 @@ class Product(models.Model):
     stock       = models.PositiveIntegerField(default=100)
     created     = models.DateTimeField(auto_now_add=True)
     updated     = models.DateTimeField(auto_now=True)
+    featured    = models.BooleanField(default=False)
     discount_percent = models.PositiveIntegerField(blank=True, null=True)
 
     class Meta:

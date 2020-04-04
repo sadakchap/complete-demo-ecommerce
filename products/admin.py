@@ -18,9 +18,9 @@ class ProductImageSetInline(admin.TabularInline):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'price', 'discount_percent','brand', 'stock', 'created', 'updated']
-    list_filter  = ['created', 'updated']
-    list_editable = ['price', 'discount_percent', 'stock']
+    list_display = ['name', 'price', 'discount_percent','brand', 'featured', 'stock', 'updated']
+    list_filter = ['featured', 'created', 'updated']
+    list_editable = ['price', 'discount_percent', 'featured', 'stock']
     prepopulated_fields = {
         'slug': ('name', )
     }
@@ -30,6 +30,5 @@ class ProductAdmin(admin.ModelAdmin):
     inlines = [
         ProductImageSetInline,
     ]
-
-
+    
 admin.site.register(ProductImageSet)

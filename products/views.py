@@ -11,7 +11,11 @@ from cart.forms import CartAddProductForm
 def home_view(request):
     product_list = Product.objects.order_by('-discount_percent')
     products_on_sale = [prod for prod in product_list if prod.discount_percent]
-    return render(request, "index.html", context={'products_on_sale': products_on_sale})
+    featured_products = Product.objects.filter(featured=True)
+    return render(request, "index.html", context={
+        'products_on_sale': products_on_sale[:8],
+        'featured_products': featured_products[:8],
+    })
     
 def product_list(request, category_slug=None):
     category = None
