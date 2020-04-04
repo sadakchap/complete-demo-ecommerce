@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import Category, Product, ProductImageSet
 from tinymce.widgets import TinyMCE
 from django.db import models
+from .forms import ProductAdminForm
 # Register your models here.
 
 @admin.register(Category)
@@ -18,6 +19,7 @@ class ProductImageSetInline(admin.TabularInline):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
+    form = ProductAdminForm
     list_display = ['name', 'price', 'discount_percent','brand', 'featured', 'stock', 'updated']
     list_filter = ['featured', 'created', 'updated']
     list_editable = ['price', 'discount_percent', 'featured', 'stock']

@@ -1,6 +1,9 @@
 DONE ---- 1. create Address model for Users
 DONE ---- 2. add Brand field in products model(if needed)
 DONE ---- 4. option to go to cart at navbar
+DONE ---- 13. POst ajax request 4 adding items to cart
+DONE ---- 11. AJAX request on cart remove, add , update for navbar
+DONE ---- 16. short desc textfield on products
 3. design home page...
 4. check product stock before addding to stock and while creating order also.
 5. design payment_status html page
@@ -10,8 +13,11 @@ DONE ---- 4. option to go to cart at navbar
 one payment_status.html and show the msg accordingly).
 9. have a button to go "home" page of payment_status.html page
 10. have orders option on navbar 
-11. AJAX request on cart remove, add , update for navbar
 12. change Brand charfield to char choicefield for admins
-13. POst ajax request 4 adding items to cart
-14. django serialize django model object
-CANCELLED---5. design payment success and canel html pages
+13. product quick view modal
+14. loading page or icon during akax call
+15. review system
+16. ajax request on modal product
+17. Zoom in effect on modal quick view product
+CANCELLED---14. django serialize django model object
+CANCELLED---5. design payment success and cancel html pages

@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.http import JsonResponse
 
 from .models import Category, Product
 from cart.forms import CartAddProductForm
@@ -52,3 +53,25 @@ def product_detail(request, id, slug):
         'product': product,
         'cart_form': cart_form,
     })
+
+
+def product_quick_detail_ajax(request, product_id):
+    data = {}
+    try:
+        product = Product.objects.get(id=product_id)
+    except Product.DoesNotExist:
+        data['status'] = 'ko'
+        data['error_message'] = 'Product does not exist!'
+        return JsonResponse(data, safe=False)
+    if product:
+        data['status'] = 'ok'
+        data['item'] = {
+            'product_id': str(product.id),
+            'product_name': str(product.name),
+            'product_image_url': str(product.image.url),
+            # 'product_review': str(product.get_review()),
+            'product_short_desc': str(product.short_desc),
+            'product_current_price': str(product.get_price()),
+            'product_original_price': str(product.price),
+        }
+        return JsonResponse(data, safe=False)

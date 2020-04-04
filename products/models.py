@@ -33,6 +33,7 @@ class Product(models.Model):
     created     = models.DateTimeField(auto_now_add=True)
     updated     = models.DateTimeField(auto_now=True)
     featured    = models.BooleanField(default=False)
+    short_desc  = models.TextField(null=True, blank=True)
     discount_percent = models.PositiveIntegerField(blank=True, null=True)
 
     class Meta:

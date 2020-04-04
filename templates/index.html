@@ -134,6 +134,68 @@
 </div>
 <!-- featured products end -->
 
+<!-- product quick view modal start -->
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="product-quick-view" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+	aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">A Quick View</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-lg-6 col-md-12 col-12">
+						<div class="modal-product-image">
+							<div class="product-zoom-img-box">
+								<img src="" alt="" srcset="">
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6 col-md-12 col-12">
+						<div class="modal-product-detail">
+							<div class="modal-product-name">
+								<h4>Short Product Name</h4>
+							</div>
+							<div class="ratings-container">
+								<span class="fa fa-star checked"></span>
+								<span class="fa fa-star checked"></span>
+								<span class="fa fa-star checked"></span>
+								<span class="fa fa-star checked"></span>
+								<span class="fa fa-star"></span>
+							</div>
+							<div class="product-price mt-2">
+								<span class="old-price">$59.99</span>
+								<span class="discount-price">$49.99</span>
+							</div>
+							<div class="modal-product-desc mt-3">
+								<p></p>
+							</div>
+							<div class="modal-product-actions mt-2">
+								<button type="submit" class="btn btnD1"><i class="fa fa-shopping-bag" aria-hidden="true"></i> Add to cart</button>
+								<a href="#" class="btn btnD1 px-3"><i class="fa fa-heart"></i></a>
+							</div>
+							<div class="modal-product-share mt-2">
+								<ul class="share-actions">
+									<li>Share: </li>
+									<li><a href=""><i class="fa fa-facebook"></i></a></li>
+									<li><a href=""><i class="fa fa-twitter"></i></a></li>
+									<li><a href=""><i class="fa fa-pinterest"></i></a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- product quick view modal end -->
+
+
 
 {% endblock %}
 {% block extra_scripts %}
@@ -154,6 +216,7 @@
 	</script>
 	<script>
 		$(document).ready(function(){
+			// product list catalog script
 			$('.add-to-cart-btn-icon-anchor').on("click", function(e){
 				e.preventDefault();
 				var product_id = $(this).data("product-id")
@@ -202,6 +265,44 @@
 					}
 				});
 			});
+
+			$('.quick-view-btn-anchor').on("click", function(e){
+
+				e.preventDefault();
+				var product_id = parseInt($(this).data("product-id"));
+
+				$.ajax({
+					url: '/product-detail/ajax/'+product_id+'/',
+					data:{},
+					dataType: 'json',
+					success: function(data){
+						if(data.status == 'ok'){
+							var item = data.item;
+							console.log(item);
+							// add item data to modal html
+							var modalProductImage = $('.modal-body').children().first().children();
+							modalProductImage.find('img').attr("src", item.product_image_url);
+
+							var modalProductDetail = $('.modal-body').children().last().children();
+							modalProductDetail.find(".modal-product-name h4").text(item.product_name);
+							modalProductDetail.find(".old-price").text('$'+ item.product_original_price);
+							modalProductDetail.find(".discount-price").text('$'+ item.product_current_price);
+							modalProductDetail.find(".modal-product-desc p").text(item.product_short_desc);
+							// display:none to navbar
+							$('#product-quick-view').modal('show');
+						}else{
+							alert(data.error_message);
+						}
+					}
+				})
+			});
+
+			$('#product-quick-view').on('hidden.bs.modal',function(){
+				$(".header-nav").css('display', 'block');
+			});
+			$('#product-quick-view').on('shown.bs.modal',function(){
+				$(".header-nav").css('display', 'none');
+			})
 		});
 	</script>
 {% endblock %}
