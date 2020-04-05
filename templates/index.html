@@ -2,6 +2,10 @@
 {% load static %}
 {% block extrastyles %}
 	<link rel="stylesheet" href="https://unpkg.com/swiper/css/swiper.min.css">
+	<link rel="stylesheet" href="{% static 'css/smoothproducts/smoothproducts.css' %}">
+	<style>
+		
+	</style>
 {% endblock %}
 {% block content %}
 
@@ -150,8 +154,8 @@
 				<div class="row">
 					<div class="col-lg-6 col-md-12 col-12">
 						<div class="modal-product-image">
-							<div class="product-zoom-img-box">
-								<img src="" alt="" srcset="">
+							<div class="sp-wrap">
+								<a href=""><img src="" alt=""></a>
 							</div>
 						</div>
 					</div>
@@ -200,6 +204,7 @@
 {% endblock %}
 {% block extra_scripts %}
 	<script src="https://unpkg.com/swiper/js/swiper.min.js"></script>
+	<script src="{% static 'js/smoothproducts/smoothproducts.min.js' %}"></script>
 	<script>
 		var swiper = new Swiper('.swiper-container', {
 			slidesPerView: 'auto',
@@ -278,9 +283,9 @@
 					success: function(data){
 						if(data.status == 'ok'){
 							var item = data.item;
-							console.log(item);
 							// add item data to modal html
 							var modalProductImage = $('.modal-body').children().first().children();
+							modalProductImage.find('a').attr("href", item.product_image_url);
 							modalProductImage.find('img').attr("src", item.product_image_url);
 
 							var modalProductDetail = $('.modal-body').children().last().children();
@@ -288,8 +293,9 @@
 							modalProductDetail.find(".old-price").text('$'+ item.product_original_price);
 							modalProductDetail.find(".discount-price").text('$'+ item.product_current_price);
 							modalProductDetail.find(".modal-product-desc p").text(item.product_short_desc);
-							// display:none to navbar
+							
 							$('#product-quick-view').modal('show');
+							
 						}else{
 							alert(data.error_message);
 						}
@@ -303,6 +309,8 @@
 			$('#product-quick-view').on('shown.bs.modal',function(){
 				$(".header-nav").css('display', 'none');
 			})
+
+			$('.sp-wrap').smoothproducts();
 		});
 	</script>
 {% endblock %}
