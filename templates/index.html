@@ -159,14 +159,14 @@
 			</div>
 			<div class="modal-body">
 				<div class="row">
-					<div class="col-lg-6 col-md-12 col-12">
+					<div class="col-lg-6 col-md-6 col-12">
 						<div class="modal-product-image">
 							<div class="sp-wrap">
-								<a href=""><img src="" alt=""></a>
+								
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-6 col-md-12 col-12">
+					<div class="col-lg-6 col-md-6 col-12">
 						<div class="modal-product-detail">
 							<div class="modal-product-name">
 								<h4>Short Product Name</h4>
@@ -211,7 +211,7 @@
 {% endblock %}
 {% block extra_scripts %}
 	<script src="https://unpkg.com/swiper/js/swiper.min.js"></script>
-	<script src="{% static 'js/smoothproducts/smoothproducts.min.js' %}"></script>
+	<script src="{% static 'js/smoothproducts/smoothproducts.js' %}"></script>
 	<script>
 		var swiper = new Swiper('.swiper-container', {
 			slidesPerView: 'auto',
@@ -279,7 +279,6 @@
 			});
 
 			$('.quick-view-btn-anchor').on("click", function(e){
-
 				e.preventDefault();
 				var product_id = parseInt($(this).data("product-id"));
 
@@ -290,22 +289,35 @@
 					success: function(data){
 						if(data.status == 'ok'){
 							var item = data.item;
-							var image_list = data.product_image_list;
-							console.log(image_list);
-							// add item data to modal html
-							var modalProductImage = $('.modal-body').children().first().children();
-							modalProductImage.find('a').attr("href", item.product_image_url);
-							modalProductImage.find('img').attr("src", item.product_image_url);
-							// create a>img tags and append them inside .sp-wrap
+							var image_list = JSON.parse(data.product_image_list);
 
-							var modalProductDetail = $('.modal-body').children().last().children();
+							// add item data to modal html
+							var modalProductImage = $('.modal-body').children().first().children().first();
+							// add product image
+							modalProductImage.find('.sp-wrap').append($('<a/>', {
+								'href': item.product_image_url
+							}).append($('<img/>', {
+								'src': item.product_image_url
+							})));
+							// add product other images
+							for (const img_url of image_list) {
+								modalProductImage.find('.sp-wrap').append($('<a/>', {
+									'href': img_url
+								}).append($('<img/>', {
+									'src': img_url
+								})));
+							}
+
+							console.log(image_list.length);
+
+							var modalProductDetail = $('.modal-body').children().last().children().last();
 							modalProductDetail.find(".modal-product-name h4").text(item.product_name);
 							modalProductDetail.find(".old-price").text('$'+ item.product_original_price);
 							modalProductDetail.find(".discount-price").text('$'+ item.product_current_price);
 							modalProductDetail.find(".modal-product-desc p").text(item.product_short_desc);
 							
+							$('.sp-wrap').smoothproducts();
 							$('#product-quick-view').modal('show');
-							
 						}else{
 							alert(data.error_message);
 						}
@@ -314,13 +326,14 @@
 			});
 
 			$('#product-quick-view').on('hidden.bs.modal',function(){
+				$('.sp-wrap').html('')
 				$(".header-nav").css('display', 'block');
 			});
 			$('#product-quick-view').on('shown.bs.modal',function(){
 				$(".header-nav").css('display', 'none');
 			})
 
-			$('.sp-wrap').smoothproducts();
+			
 		});
 	</script>
 {% endblock %}
