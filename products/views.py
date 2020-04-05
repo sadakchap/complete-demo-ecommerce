@@ -3,6 +3,8 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse
 
+import json
+
 from .models import Category, Product
 from cart.forms import CartAddProductForm
 
@@ -74,4 +76,9 @@ def product_quick_detail_ajax(request, product_id):
             'product_current_price': str(product.get_price()),
             'product_original_price': str(product.price),
         }
+        product_image_list = []
+        for img in product.image_set.all():
+            product_image_list.append(img.image.url)
+        data['product_image_list'] = json.dumps(product_image_list)
+        print(json.dumps(product_image_list))
         return JsonResponse(data, safe=False)
