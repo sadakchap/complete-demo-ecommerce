@@ -16,7 +16,7 @@
 
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
-    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
 
     {% block extrastyles %}
         
@@ -45,6 +45,7 @@
         {% endblock %}
     </div>
 
+    {% include "footer.html" %}
 
     {% include 'body_scripts.html' %}
     <script type="text/javascript">
@@ -101,6 +102,7 @@
             });
             // for font-awesome icons, targetting pseudoclass of .fa element
             $('head').append('<style>.fa:before{font-family:fontAwesome;}</style>');
+            $('head').append('<style>.fab:before{font-family:fontAwesome;}</style>');
 
             $("#nav-cart-list").on("click", ".nav-cart-item-remove", function(e){
                 e.preventDefault();

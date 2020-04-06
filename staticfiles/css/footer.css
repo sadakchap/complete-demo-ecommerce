@@ -1,0 +1,168 @@
+.footer-top{
+    padding: 4rem 0;
+    align-items: center;
+    border-top: 1px solid #f4f4f4;
+    border-bottom: 1px solid #f4f4f4;
+}
+.widget-newsletter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.widget-newsletter-info h2{
+    margin: 0;
+    padding: 0;
+    color: #000;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+    font-size: .9rem;
+}
+.widget-newsletter-info p{
+    color: #5a5a5a;
+    font-size: .85rem;
+    letter-spacing: 1px;
+    margin: 0;
+}
+.footer-top form {
+    margin: 0;
+    width: 100%;
+}
+.footer-top .footer-submit-wrapper {
+    display: flex;
+    max-width: 100%;
+}
+
+.footer-top .form-control {
+    font-size: .8rem;
+    padding: 1.1rem 1.2rem;
+    width: 80%;
+    line-height: normal;
+    border: none;
+    height: auto;
+    outline: none;
+    margin: 0;
+    background-color: #f4f4f4;
+    color: #6b7074;
+    box-shadow: none;
+    letter-spacing: 1px;
+}
+
+.share{
+    text-align: right;
+}
+a.social-icon{
+    display: inline-block;
+    color: #000;
+    margin: 0 1em;
+    font-size: 1.1rem;
+    text-decoration: none;
+}
+.footer-middle{
+    background: #000;
+}
+
+.widget-title {
+    margin: .5rem 0 1.3rem;
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 500;
+    line-height: 1.2;
+}
+.footer .widget .widget-title{
+    text-transform: uppercase;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.075em;
+    margin-bottom: 1.5rem;
+    margin-top: 0;
+}
+footer .contact-widget {
+    margin: 0 0 1rem;
+}
+
+footer .contact-widget .widget-title {
+    letter-spacing: 0.005em;
+    color: #fff;
+    margin-bottom: 0;
+}
+footer .widget a {
+    color: #90969a;
+    text-decoration: none;
+    font-size: .9rem;
+    letter-spacing: 0.005em;
+}
+.footer-middle .links.link-parts {
+    display: flex;
+}
+.footer-middle .links.link-parts li {
+    margin-bottom: .6rem;
+    list-style: none;
+}
+.footer-middle .links.link-parts .link-part+.link-part {
+    margin-left: 3rem;
+}
+.footer-bottom{
+    background: #000;
+}
+.footer-bottom p {
+    font-size: .8rem;
+    color: #90969a;
+    margin-bottom: 0;
+}
+@media screen and (max-width: 992px ) and (min-width: 498px ){
+    .footer-top{
+        padding: 2rem 0;
+    }
+    form, .form-footer {
+        margin-bottom: 4rem;
+    }
+    .widget-newsletter-info {
+        margin: 1em auto;
+        width: 100%;
+    }
+    .footer-top .footer-submit-wrapper {
+        width: 100%;    
+    }
+    .footer-right{
+        margin-top: 3em;
+    }
+    .share{
+        text-align: center;
+        margin: 2em auto 0;
+    }
+    .footer-middle .links.link-parts .link-part+.link-part {
+        margin-left: 2rem;
+    }
+}
+
+@media screen and (max-width: 498px ){
+    .footer-top{
+        padding: 2rem 0;
+    }
+    form, .form-footer {
+        margin-bottom: 4rem;
+    }
+    .widget-newsletter{
+        display: flex;
+        flex-direction: column;
+    }
+    .widget-newsletter-info {
+        margin: 1em auto;
+        width: 100%;
+    }
+    .footer-top .footer-submit-wrapper {
+        width: 100%;    
+    }
+    .footer-right{
+        margin-top: 3em;
+    }
+    .share{
+        margin: 2em auto 0;
+    }
+    .footer-middle .links.link-parts .link-part+.link-part {
+        margin-left: 2rem;
+    }
+}
