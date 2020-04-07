@@ -80,5 +80,4 @@ def product_quick_detail_ajax(request, product_id):
         for img in product.image_set.all():
             product_image_list.append(img.image.url)
         data['product_image_list'] = json.dumps(product_image_list)
-        print(json.dumps(product_image_list))
         return JsonResponse(data, safe=False)

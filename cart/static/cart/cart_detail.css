@@ -1,0 +1,195 @@
+.page-header{
+    margin: 0;
+    padding: 0;
+}
+.page-header h1{
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.2rem;
+    font-weight: 800;
+    font-size: 3rem;
+    line-height: 2em;
+}
+
+
+.table.table-cart tr th {
+    padding: 1.2rem .8rem 1.2rem;
+    border: 0;
+    border-bottom: 0;
+    font-weight: 500 !important;
+    font-size: .9rem;
+}
+.table.table-cart tr td {
+    padding: 1.5rem .5rem;
+    border-top: 1px solid #ccc;
+}
+.table.table-cart tr th:not(.product-col), .table.table-cart tr td:not(.product-col) {
+    text-align: center;
+}
+.table.table-cart tr th, .table.table-cart tr td {
+    vertical-align: middle;
+}
+
+.table.table-cart tr td.product-col {
+    padding: 2rem .8rem 1.8rem 0;
+}
+.table-cart tr th, .table-cart tr td {
+    vertical-align: middle !important;
+}
+
+.product-col {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.product-col .product-image-container {
+    -ms-flex: 0 0 180px;
+    flex: 0 0 180px;
+    max-width: 180px;
+    margin-right: 1.8rem;
+    margin-bottom: 0;
+    border: 1px solid #ccc;
+    vertical-align: middle;
+}
+.product-col .product-image-container a{
+    display: inline-block;
+}
+.product-col .product-image-container a > img{
+    width: 100%;
+}
+.table-cart .product-title {
+    margin-bottom: 0;
+}
+.product-col .product-title {
+    display: inline-block;
+    vertical-align: middle;
+}
+.product-col .product-title a{
+    display: inline-block;
+    color: #000;
+    text-decoration: none;
+    letter-spacing: 1px;
+    font-weight: 300;
+    font-size: 2em;
+}
+.change-qty input[name="qty"]{
+    width: 30px;
+}
+.table.table-cart tfoot .cart-table-footer{
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+}
+
+#id_code{
+    text-transform: uppercase;
+    font-size: 1rem;
+    padding: 10px;
+    font-weight: 400;
+    border-radius: 0;
+    outline: none;
+    width: 300px;
+}
+#id_code:focus{
+    box-shadow: none;
+}
+.cart-summary {
+    margin-bottom: 2.5rem;
+    padding: 1.4rem 1.8rem 2.2rem;
+    border: 1px solid #ddd;
+    background: #fbfbfb;
+}
+.cart-summary h3 {
+    margin-bottom: 1.3rem;
+    font-size: 1.5rem;
+    font-weight: 300;
+}
+.table.table-totals {
+    margin-bottom: 2rem;
+    border-top: 1px solid #ccc;
+}
+.table.table-totals tr td{
+    font-size: .9rem;
+} 
+.table.table-totals tfoot {
+    border-top: 1px solid #ccc;
+    font-size: 1.1rem;
+    font-weight: 500;
+    font-size: .9rem;
+}
+.apply-coupon-box h4{
+    font-size: 1rem;
+    text-transform: capitalize;
+    font-weight: 400;
+    letter-spacing: .3px;
+}
+
+
+@media screen and (max-width: 991px) and (min-width: 498px){
+    .product-col .product-image-container {
+        flex: 0 0 100px;
+        max-width: 100px;
+        margin-right: .8rem;
+    }
+    .product-col .product-title a{
+        font-size: 1em;
+    }
+}
+@media screen and (max-width: 498px ){
+    .page-header h1{
+        font-size: 2rem;
+        line-height: 2rem;
+    }
+    .table.table-cart tbody tr td{
+        width: 100%;
+        border-top: none;
+        padding: .5rem .3rem;   
+    }
+    .table.table-cart tr td.product-col {
+        padding: .5rem .3rem;
+    }
+    .table.table-cart tbody tr:nth-child(even){
+        border-bottom: 1px solid #ccc;
+    }
+    .product-col .product-title a{
+        font-size: 1em;
+    }
+    .product-col .product-image-container {
+        flex: 0 0 180px;
+        max-width: 180px;
+        margin-right: .8rem;
+    }
+    .table.table-cart thead{
+        display: none;
+    }
+    .table.table-cart tbody tr{
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .table.table-cart tr td {
+        padding: .5rem .2rem;
+        border-top: 1px solid #ccc;
+    }
+    
+    .product-col{
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .table.table-cart tfoot .cart-table-footer .left{
+        display: none;
+    }
+    
+    #id_code{
+        width: 100% !important;   
+    } 
+    #div_id_code{
+        margin: 0 !important;
+    }
+    .form-group{
+        margin: 0 !important;
+    }
+}

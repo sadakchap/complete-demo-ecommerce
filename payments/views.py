@@ -27,7 +27,7 @@ def payment_process(request):
         "CALLBACK_URL": request.build_absolute_uri(reverse('payments:handle-response'))
     }
     params['CHECKSUMHASH'] = Checksum.generate_checksum(params, settings.PAYMENT_MERCHANT_KEY)
-    
+    print(params)
     return render(request, "payments/paytm.html", {'params': params, 'order': order})
 
 

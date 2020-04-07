@@ -19,12 +19,15 @@ one payment_status.html and show the msg accordingly).
 9. have a button to go "home" page of payment_status.html page
 10. have orders working option on navbar 
 12. change Brand charfield to char choicefield for admins
-14. loading page or icon during akax call
+14. loading page or icon during akax call 
 15. review system
 17. nested ul -- add box-shadow, scroll on
 18. Implement wishlist on navbar, quick-view, detail
 19. design product quantity on quick view, detail
 21. newsletter subscribe on footer and links
+22. show network error on ajax if there is
+
+23. Generate unique order id for transaction to paytm
 
 CANCELLED---14. django serialize django model object
 CANCELLED---5. design payment success and cancel html pages

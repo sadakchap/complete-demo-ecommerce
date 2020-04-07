@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;400;500;800&display=swap');
 *{
     margin: 0;
     padding: 0;
@@ -63,5 +63,21 @@ body{
 @media (max-width: 991px){
     .container-fluid{
         padding: 2em 20px !important;
+    }
+}
+
+@media screen and (max-width: 498px ){
+    .btnD2{
+        padding: 10px 15px;
+        border-radius: 0 !important;
+        font-size: .8rem;
+        margin: .5rem auto;
+    }
+    
+    .btnD1{
+        padding: 10px 15px;
+        border-radius: 0 !important;
+        font-size: .8rem;
+        margin: .5rem auto;
     }
 }

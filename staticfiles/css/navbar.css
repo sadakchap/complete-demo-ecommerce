@@ -7,7 +7,13 @@
     width: 100%;
     box-sizing: border-box;
     z-index: 100000000;
-    transition: .2s;
+    transition: .3s;
+}
+
+.scrolled-nav{
+    padding: 5px 100px !important;
+    background-color: #fff !important;
+    box-shadow: 0 3px 10px #eee !important;
 }
 
 .header-nav .logo{
@@ -20,6 +26,7 @@
     letter-spacing: 3px;
     padding-right: .5em;
     cursor: pointer;
+    transition: .3s;
 }
 .header-nav div.nav-box{
     width: 100%;

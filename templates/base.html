@@ -142,9 +142,11 @@
         $(window).scroll(function () {
             if ($(window).width() > 991) {
                 if($(window).scrollTop() >= 50){
-                    $('.header-nav').css('background-color', '#fff');
+                    $('.header-nav').addClass('scrolled-nav');
+                    $('.header-nav .logo').css('font-size', '2.5em');
                 } else {
-                    $('.header-nav').css('background-color', 'transparent');
+                    $('.header-nav').removeClass('scrolled-nav');
+                    $('.header-nav .logo').css('font-size', '3em');
                 }
             }else{
                 $('.header-nav').css('background-color', '#000');
