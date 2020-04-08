@@ -3,7 +3,9 @@
 {% load crispy_forms_tags %}
 {% block extrastyles %}
 <link rel="stylesheet" href="{% static 'css/exzoom/jquery.exzoom.css'%}">
-<link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
+<link rel="stylesheet" href="{% static 'products/product_detail.css' %}">
+<link rel="stylesheet" href="{% static 'css/swiper/swiper.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
 <style>
     label{
         display: inline;
@@ -30,35 +32,38 @@
         <div class="product-box">
             <div class="row">
                 <!-- images of product -->
-                <div class="col-lg-6" style="height: 80vh; position: relative;">
-                    <div class="exzoom" id="exzoom">
-                        <!-- Images -->
-                        <div class="exzoom_img_box">
-                            <ul class='exzoom_img_ul'>
-                                <li><img src="{{ product.image.url }}" /></li>
-                                
-                                {% for img in product.image_set.all %}
-                                    <li><img src="{{ img.image.url }}" /></li>
-                                {% endfor %}
-                            </ul>
+                <div class="col-md-6 col-lg-4">
+                    <div class="exzoom-outer-box">
+                        <div class="exzoom" id="exzoom">
+                            <!-- Images -->
+                            <div class="exzoom_img_box">
+                                <ul class='exzoom_img_ul'>
+                                    <li><img src="{{ product.image.url }}" /></li>
+                                    
+                                    {% for img in product.image_set.all %}
+                                        <li><img src="{{ img.image.url }}" /></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="exzoom_nav"></div>                            
                         </div>
-                        <!-- <a href="https://www.jqueryscript.net/tags.php?/Thumbnail/">Thumbnail</a> Nav-->
-                        <div class="exzoom_nav"></div>
-                        <!-- Nav Buttons -->
-                        <p class="exzoom_btn">
-                            <a href="javascript:void(0);" class="exzoom_prev_btn">
-                                &lt; </a>
-                            <a href="javascript:void(0);" class="exzoom_next_btn"> &gt; </a>
-                        </p>
                     </div>
                 </div>
 
                 <!-- product detail start -->
-                <div class="col-lg-6">
+                <div class="col-md-6 col-lg-5">
                     <h4 class="product-name">{{ product.name }}</h4>
+                    <div class="ratings-container">
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span> 
+                        <span class="text-muted">(6 reviews)</span>
+                    </div>
                     <p><a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></p>
                     <p>{% if product.is_available %}
-                        <span class="text-success">In Stock {{ product.stock }}</span>
+                        <span class="text-success">In Stock</span>
                         {% else %}
                             <span class="text-danger">Out Of Stock!</span>
                         {% endif %}
@@ -72,17 +77,17 @@
                         {% endif %}
                     </p>
                     <div class="product-desc-box">
-                        {{ product.desc|safe }}
+                        {{ product.short_desc|safe }}
                     </div>
                     <div class="cart-form">
-                        <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                        <form action="{% url 'cart:cart_add' product.id %}" method="post" class="form-inline">
                             {% csrf_token %}
-                            <div class="form-row">
-                                <div class="form-group quantity-field col-md-3 mb-0">
+                            <div class="form-row d-flex w-100">
+                                <div class="form-group quantity-field col-md-2 mb-0">
                                     {{ cart_form.quantity|as_crispy_field }}
                                     {{ cart_form.update|as_crispy_field }}
                                 </div>
-                                <div class="form-group col-md-8 mb-0">
+                                <div class="form-group-append col-md-8 mb-0">
                                     <button type="submit" class="btn btnD1"><i class="fa fa-shopping-bag" aria-hidden="true"></i> Add to cart</button>
                                     <a href="#" class="btn btnD1 px-3"><i class="fa fa-heart"></i></a>
                                 </div>
@@ -90,8 +95,112 @@
                             </div>
                         </form>
                     </div>
+                    <div class="share-product">
+                        <ul class="share-actions">
+                            <li>Share: </li>
+                            <li><a href=""><i class="fab fa-facebook"></i></a></li>
+                            <li><a href=""><i class="fab fa-twitter"></i></a></li>
+                            <li><a href=""><i class="fab fa-pinterest"></i></a></li>
+                        </ul>
+                    </div>
                 </div>
                 <!-- product detail end -->
+                <div class="col-lg-3">
+                    <div class="sidebar-wrapper">
+                        <div class="widget widget-info">
+                            <ul>
+                                <li>
+                                    <div>
+                                        <img src="{% static 'img/shipping_icon2.png' %}" alt="">
+                                        <h3>Free <br> shipping</h3>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div>
+                                        <img src="{% static 'img/INR_icon.png' %}" alt="">
+                                        <h3>100% money <br> back gurantee</h3>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div>
+                                        <img src="{% static 'img/online_support_icon.png' %}" alt="">
+                                        <h3>Online <br> support 24/7</h3>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="widget widget-banner">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-9">
+                    <div class="desc-wrapper">
+                        <h2>Full Description</h2> <hr>
+                        <div class="product-desc-box">
+                            {{ product.short_desc|safe }}
+                        </div>
+                        <div class="product-desc-box full-desc">
+                            {{ product.desc|safe }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="featured-products-slider">
+            <div class="heading-text">
+                <h3>Featued Products</h3>
+            </div>
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    <div class="row">
+                    {% for product in featured_products %}
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="product-default product">
+                            <div class="product-image">
+                                <a href="{{ product.get_absolute_url }}" class="product-image-anchor">
+                                    <img src="{{ product.image.url }}" alt="">
+                                </a>
+                                {% if product.discount_percent %}
+                                <div class="discount-label">{{ product.discount_percent }}% Off</div>
+                                {% endif %}
+                                <div class="add-to-cart-btn-icon">
+                                    <a href="add-to-cart/" class="add-to-cart-btn-icon-anchor" data-product-id="{{ product.id }}">
+                                        <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                                <div class="quick-view-btn"><a href="" class="quick-view-btn-anchor"
+                                        data-product-id="{{ product.id }}">Quick view</a></div>
+                            </div>
+                            <div class="product-detail">
+                                <div class="product-category">
+                                    <a href="{{ product.category.get_absolute_url }}"
+                                        class="product-category-anchor">{{ product.category }}</a>
+                                </div>
+                                <div class="product-title">
+                                    <a href="{{ product.get_absolute_url }}"
+                                        class="product-title-anchor">{{ product.name|truncatewords:4 }}</a>
+                                </div>
+                                <div class="ratings-container">
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star"></span>
+                                </div>
+                                <div class="product-price">
+                                    <span class="old-price">${{ product.price }}</span>
+                                    <span class="discount-price">${{ product.get_price }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
             </div>
         </div>
     </div>
@@ -100,6 +209,21 @@
 
 {% block extra_scripts %}
     <script src="{% static 'js/exzoom/jquery.exzoom.js' %}"></script>
+    <script src="{% static 'js/swiper/swiper.min.js' %}"></script>
+    <script>
+        var swiper = new Swiper('.swiper-container', {
+            slidesPerView: 'auto',
+            spaceBetween: 15,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            autoplay: {
+                delay: 2500,
+                disableOnInteraction: false,
+            },
+        });
+    </script>
     <script type="text/javascript">
         $(function () {
             $("#exzoom").exzoom({

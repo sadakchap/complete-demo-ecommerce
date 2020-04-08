@@ -49,11 +49,13 @@ def product_list(request, category_slug=None):
     })
 
 def product_detail(request, id, slug):
+    featured_products = Product.objects.filter(featured=True)
     product = get_object_or_404(Product, id=id, slug=slug)
     cart_form = CartAddProductForm()
     return render(request, 'products/product_detail.html', {
         'product': product,
         'cart_form': cart_form,
+        'featured_products': featured_products[:8],
     })
 
 

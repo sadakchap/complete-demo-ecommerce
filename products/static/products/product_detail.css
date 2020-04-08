@@ -1,0 +1,127 @@
+.exzoom-outer-box{
+    position: relative;
+    height: 70vh;
+    width: 100%;
+}
+#exzoom{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+    max-width: 100%;
+    z-index: 9999 !important;
+}
+.exzoom .exzoom_preview{
+    margin: 0;
+    position: absolute;
+    top: 0;
+    overflow: hidden;
+    z-index: 999;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    display: none;
+    box-shadow: 0px 0px 5px #aaa, 0px 5px 10px #e6e6e6;
+}
+.product-box{
+    margin: 2em 3em;
+}
+
+.img-box{
+    width: 100%;
+    height: 400px;
+    box-shadow: 0px 0px 2px #aaa;
+}
+
+.img-box img{
+    width: 100%;
+    height: 100%;
+}
+
+.product-desc-box {
+    margin: 1em 0;
+    width: 100%;
+    font-size: .9rem;
+    color: dimgrey;
+}
+.widget .widget-info ul{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.widget.widget-info ul li{
+    padding: .5em .3em;
+    list-style: none;
+}
+.widget.widget-info ul li div{
+    padding: .5rem .3rem;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+}
+.widget.widget-info ul li div img{
+    max-width: 50px;
+    margin-right: 2rem;
+}
+.widget.widget-info ul li div h3{
+    color: #6b7a83;
+    font-size: .9rem;
+    text-transform: uppercase;
+
+}
+
+
+
+.share-product{
+    margin: 1.5rem 0;
+}
+
+ul.share-actions{
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+ul.share-actions li{
+    list-style: none;
+    text-transform: uppercase;
+    font-size: .9rem;
+    color: #6b7a83;
+    letter-spacing: 1px;
+}
+ul.share-actions li > a{
+    display: inline-block;
+    margin: 0 .8em;
+    border: none;
+    color: #000;
+    text-decoration: none;
+    font-size: .9rem;
+}
+.desc-wrapper{
+    margin: 2rem 0;
+    padding: 1.2rem .8rem;
+}
+.desc-wrapper h2{
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+.desc-wrapper div{
+    font-weight: 400;
+}
+.desc-wrapper div.full-desc{
+    padding-left: 3rem;
+}
+
+@media screen and (max-width: 991px) and (min-width: 498px){
+    .desc-wrapper div.full-desc{
+        padding-left: 2rem;
+    }
+}
+
+@media screen and (max-width: 498px ){
+    .desc-wrapper div.full-desc{
+        padding-left: 1.5rem;
+    }
+}
