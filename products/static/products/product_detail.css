@@ -1,3 +1,26 @@
+.wrapper{
+    padding: 2em;
+}
+#id_quantity:focus{
+    box-shadow: none;
+}
+label{
+    display: inline;
+}
+span.asteriskField{
+    display: none;
+}
+div#div_id_quantity{
+    display: flex; 
+    justify-content: space-between; 
+    align-items: baseline;
+}
+.old-price{
+    font-size: .8rem;
+    text-decoration: line-through;
+    color: #5a5a5a;
+}
+
 .exzoom-outer-box{
     position: relative;
     height: 70vh;
@@ -21,9 +44,6 @@
     border: 1px solid #ddd;
     display: none;
     box-shadow: 0px 0px 5px #aaa, 0px 5px 10px #e6e6e6;
-}
-.product-box{
-    margin: 2em 3em;
 }
 
 .img-box{
@@ -123,5 +143,11 @@ ul.share-actions li > a{
 @media screen and (max-width: 498px ){
     .desc-wrapper div.full-desc{
         padding-left: 1.5rem;
+    }
+    .wrapper{
+        padding: 2em 20px !important;
+    }
+    .desc-wrapper div.full-desc{
+        font-size: .8rem;
     }
 }
