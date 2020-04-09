@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils import timezone
 
 # Create your models here.
 
@@ -13,3 +14,11 @@ class Coupon(models.Model):
 
     def __str__(self):
         return self.code
+    
+    def set_active(self):
+        self.active = timezone.now() < self.valid_to
+        self.save()
+
+    def is_active(self):
+        self.set_active()
+        return self.active

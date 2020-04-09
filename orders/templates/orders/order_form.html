@@ -54,6 +54,12 @@
                         <span>{{ cart.coupon.code}}({{ cart.coupon.discount }}%)</span>
                         <span>-${{ cart.get_discount|floatformat:"2" }}</span>
                     </li>
+                    {% with active=cart.coupon.is_active %}
+                    <li class="d-flex justify-content-between">
+                        <span>Valid Upto- {{ cart.coupon.valid_to|date:"D,d M, h a" }}</span>
+                        <span>{% if active %}Applied{% else %}Expired{% endif %}</span>
+                    </li>
+                    {% endwith %}
                     {% endif %}
                     <li class="d-flex justify-content-between">
                         <span>Total</span>

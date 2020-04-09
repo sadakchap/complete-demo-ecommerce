@@ -112,7 +112,20 @@
 }
 .table.table-totals tr td{
     font-size: .9rem;
-} 
+}
+
+.table.table-totals tbody tr.coupon td{
+    font-weight: 500;
+    font-size: .7rem !important; 
+    border-top: none;
+    padding: 0 .75rem;
+}
+.table.table-totals tr.coupon.coupon-active td{
+    color: seagreen !important;
+}
+.table.table-totals tr.coupon.coupon-expired td{
+    color: #f00 !important;
+}
 .table.table-totals tfoot {
     border-top: 1px solid #ccc;
     font-size: 1.1rem;
