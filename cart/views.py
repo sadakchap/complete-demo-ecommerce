@@ -38,6 +38,11 @@ def cart_detail(request):
     return render(request, "cart/cart_detail.html", {'cart': cart, 'coupon_form': coupon_form})
 
 
+def cart_clear(request):
+    cart = Cart(request)
+    cart.clear()
+    return redirect('cart:cart_detail')
+
 @require_POST
 def cart_add_ajax(request):
     data = {}

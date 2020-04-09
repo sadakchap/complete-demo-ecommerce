@@ -20,70 +20,76 @@
                     <thead>
                         <tr>
                             <th class="product-col">Product</th>
-                            <th class="price-col">Price</th>
                             <th class="qty-col">Qty</th>
                             <th>Subtotal</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for item in cart %}
-                        {% with product=item.product %}
-                            <tr class="product-row">
-                                <td class="product-col">
-                                    <div class="product-image-container">
-                                        <a href="{{ product.get_absolute_url }}" class="produt-table-image">
-                                            <img src="{{ product.image.url }}" alt="" srcset="">
-                                        </a>
-                                    </div>
-                                    <div class="product-title">
-                                        <a href="">{{ product.name|truncatewords:"3" }}</a>
-                                    </div>
-                                </td>
-                                <td class="price-col">${{ item.price }}</td>
-                                <td class="qty-col">
-                                    <div class="change-qty">
-                                        <input type="text" name="qty" id="qty" value="{{ item.quantity }}">
-                                        <span class="change-qty-btns">
-                                            <button class="up-qty">
-                                                <i class="fa fa-angle-up"></i>
-                                            </button>
-                                            <button class="down-qty">
-                                                <i class="fa fa-angle-down"></i>
-                                            </button>
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>${{ item.total_price }}</td>
+                        {% if cart %}
+                            {% for item in cart %}
+                                {% with product=item.product %}
+                                    <tr class="product-row">
+                                        <td class="product-col">
+                                            <div class="product-image-container">
+                                                <a href="{{ product.get_absolute_url }}" class="produt-table-image">
+                                                    <img src="{{ product.image.url }}" alt="" srcset="">
+                                                </a>
+                                            </div>
+                                            <div class="product-title">
+                                                <a href="">{{ product.name|truncatewords:"3" }}</a>
+                                                <br><span class="text-muted small">
+                                                    {{ item.quantity }} x ${{ item.price }}
+                                                    </span>
+                                            </div>
+                                        </td>
+                                        <td class="qty-col">
+                                            <div class="change-qty">
+                                                <form class="form-inline" action="{% url 'cart:cart_add' product.id %}" method="post">
+                                                    {% csrf_token %}
+                                                    <div class="form-group">
+                                                        {{ item.update_form.quantity|as_crispy_field }}
+                                                        {{ item.update_form.update }}
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </td>
+                                        <td>${{ item.total_price }}</td>
+                                    </tr>
+                                    <tr class="product-row-action">
+                                        <td colspan="4" class="clearfix">
+                                            <div class="float-left">
+                                                <a href="#" class="btn-move">Move to Wishlist</a>
+                                            </div>
+                                        
+                                            <div class="float-right">
+                                                <a href="#" title="Edit product" class="btn-edit">
+                                                <a href="{% url 'cart:cart_remove' product.id %}" title="Remove product" class="btn-remove">
+                                                    <i class="fa fa-times"></i>
+                                                    <span class="sr-only">Remove</span>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endwith %}
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="3">Nothing in Cart!</td>
                             </tr>
-                            <tr class="product-row-action">
-                                <td colspan="4" class="clearfix">
-                                    <div class="float-left">
-                                        <a href="#" class="btn-move">Move to Wishlist</a>
-                                    </div>
-                                
-                                    <div class="float-right">
-                                        <a href="#" title="Edit product" class="btn-edit">
-                                        <a href="{% url 'cart:cart_remove' product.id %}" title="Remove product" class="btn-remove">
-                                            <i class="fa fa-times"></i>
-                                            <span class="sr-only">Remove</span>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        {% endwith %}
-                        {% endfor %}
+                        {% endif %}
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="4">
+                            <td colspan="3">
                                 <div class="cart-table-footer">
                                     <div class="left">
-                                        <a href="{% url 'products:product_list' %}" class="btn btnD1">Continue Shopping</a>
+                                        <a href="/" class="btn btnD1">Continue Shopping</a>
                                     </div>
-                            
+                                    {% if cart %}
                                     <div class="right">
-                                        <a href="#" class="btn btnD1 btn-clear-cart">Clear Shopping Cart</a>
+                                        <a href="{% url 'cart:cart_clear' %}" class="btn btnD1 btn-clear-cart">Clear Shopping Cart</a>
                                     </div>
+                                    {% endif %}
                                 </div>
                             </td>
                         </tr>
@@ -153,4 +159,12 @@
     </div>
 </div>
 
+{% endblock %}
+{% block extra_scripts %}
+    <script>
+        $('select').on('change', function(e){
+            var formElement = $(this).parent().parent().parent().parent();
+            formElement.submit();
+        });
+    </script>
 {% endblock %}

@@ -5,6 +5,62 @@
 {% endblock %}
 {% block page_title %}Order - Maa Shop{% endblock %}
 {% block content %}
+<div class="container-fluid">
+    <div class="page-header">
+        <h1>shopping cart</h1>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-9">
+
+        </div>
+        <div class="col-lg-3">
+			<div class="cart-summary">
+				<h3>Summary</h3>
+				<table class="table table-totals">
+					<tbody>
+						<tr>
+							<td>Subtotal</td>
+							<td>${{ cart.get_total_price|floatformat:"2" }}</td>
+						</tr>
+						{% if cart.coupon %}
+						<tr>
+							<td>{{ cart.coupon.code }} coupon ({{ cart.coupon.discount }}%)</td>
+							<td>-${{ cart.get_discount|floatformat:"2" }}</td>
+						</tr>
+						{% with active=cart.coupon.is_active %}
+						<tr class="coupon coupon-{% if active %}active{% else%}expired{% endif %}">
+							<td>
+								Valid upto:- <span>{{ cart.coupon.valid_to|date:"D, d M,h a" }}</span>
+							</td>
+							<td>
+								{% if active %} Applied {% else %} Expired {% endif %}
+							</td>
+						</tr>
+						{% endwith %}
+						{% endif %}
+						<tr>
+							<td>Tax</td>
+							<td>$0.00</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td>Order Total</td>
+							<td>${{ cart.get_total_price_after_discount|floatformat:"2"}}</td>
+						</tr>
+					</tfoot>
+				</table>
+			
+				<div class="checkout-methods">
+					<a href="{% url 'orders:order_create' %}" class="btn w-100 btnD2">Make Payment</a>
+				</div>
+			</div>
+		</div>
+    </div>
+</div>
+
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
         <div class="address d-flex">
