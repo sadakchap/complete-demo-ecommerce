@@ -20,29 +20,40 @@ from coupons.models import Coupon
 User = get_user_model()
 
 @login_required
-def order_create(request, adr_id=None):
+def order_summary(request):
     cart = Cart(request)
     user = request.user
-    addresses = user.addresses.all()
-    address = None
-    address_form = UserAddressForm(request.POST or None)
+    address_list = user.addresses.order_by('-created')
     modal = False
-
-    if adr_id:
-        address = get_object_or_404(UserAddress, id=adr_id)
     if request.method == 'POST':
         modal = True
+        address_form = UserAddressForm(request.POST)
         if address_form.is_valid():
+            print('form is valid')
             address = address_form.save(commit=False)
-            address.user = request.user
+            address.user = user
             address.save()
-    # create or update order when we got address else user might have entered wrong info
-    if address:
-        order_qs = Order.objects.filter(user=user, paid=False)
-        if order_qs.exists():
-            order = order_qs[0]
-        else:
-            order = Order.objects.create(user=user, address=address)
+            return redirect('orders:order_summary')
+    else:
+        address_form = UserAddressForm()
+    context = {
+        'cart': cart,
+        'address_form': address_form,
+        'address_list': address_list,
+        'modal': modal,
+    }
+    return render(request, "orders/order_summary.html", context=context)
+
+
+@login_required
+def order_create(request, adr_id):
+    address = get_object_or_404(UserAddress, id=adr_id)
+    
+    order_qs = Order.objects.filter(user=user, paid=False)
+    if order_qs.exists():
+        order = order_qs[0]
+    else:
+        order = Order.objects.create(user=user, address=address)
 
         for item in cart:
             product = item['product']
@@ -53,7 +64,7 @@ def order_create(request, adr_id=None):
                 order_item.save()
             else:
                 OrderItem.objects.create(order=order,product=product, price=item['price'],
-                                        quantity=quantity)
+                                    quantity=quantity)
             # update product stock quantity
             product.stock -= quantity
             product.save()
@@ -62,13 +73,11 @@ def order_create(request, adr_id=None):
             order.discount = cart.coupon.discount
             order.save()
 
-        # clear the cart
+            # clear the cart
         cart.clear()
         send_invoice_order.delay(order.id) #launchinf async task
         request.session['order_id'] = order.id
-        return redirect(reverse('payments:process'))
-        # return render(request, "orders/order_created.html", {'order': order})        
-    
+        return redirect(reverse('payments:process'))  
     return render(request, "orders/order_form.html", {'address_form': address_form, 'cart': cart, 'addresses': addresses, 'modal': modal})
 
 

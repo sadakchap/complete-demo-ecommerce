@@ -3,47 +3,31 @@
 {% load crispy_forms_tags %}
 {% block extrastyles %}
     <link rel="stylesheet" href="{% static 'orders/order_create.css' %}">
-    <style>
-        .modal-content label{
-            font-size: .7rem !important;
-            font-weight: 500;
-            letter-spacing: .4px;
-            text-transform: uppercase;
-        }
-        span.asteriskField{
-            color: #f00;
-        }
-        #newAddressModal input:focus,
-        #newAddressModal input:active,
-        #newAddressModal select:focus,
-        #newAddressModal select:active{
-            box-shadow: none !important;
-            border: 1px solid black;
-        }
-    </style>
+
 {% endblock %}
 {% block page_title %}Order - Maa Shop{% endblock %}
 {% block content %}
 <div class="container-fluid">
     <div class="page-header">
-        <h1>shopping cart</h1>
+        <h1>checkout</h1>
     </div>
 </div>
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-9">
             <div class="row">
-                {% if addresses %}
-                    {% for adr in addresses %}
+                {% if address_list %}
+                    {% for adr in address_list %}
                         <div class="col-12 col-md-4">
-                            <div class="address-box">
+                            <div class="address-box" id="address-box-{{ adr.id }}">
                                 <address>
                                     {{ adr.full_name|title }} <br>
                                     {{ adr.line_1 }}, {{ adr.city }} <br>
                                     {{ adr.state }}, {{ adr.pin_code }} <br>
                                     {{ adr.phone }}
                                 </address>
-                                <div class="w-100">
+                                <div class="remove-btn">
+                                    <a href="" data-address-id="{{ adr.id }}" ><i class="fa fa-times"></i></a>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <a href="{% url 'accounts:address_edit' adr.id %}" class="btn btn-sm"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
@@ -65,44 +49,39 @@
         <div class="col-lg-3">
 			<div class="cart-summary">
 				<h3>Summary</h3>
-				<table class="table table-totals">
-					<tbody>
-						<tr>
-							<td>Subtotal</td>
-							<td>${{ cart.get_total_price|floatformat:"2" }}</td>
-						</tr>
-						{% if cart.coupon %}
-						<tr>
-							<td>{{ cart.coupon.code }} coupon ({{ cart.coupon.discount }}%)</td>
-							<td>-${{ cart.get_discount|floatformat:"2" }}</td>
-						</tr>
-						{% with active=cart.coupon.is_active %}
-						<tr class="coupon coupon-{% if active %}active{% else%}expired{% endif %}">
-							<td>
-								Valid upto:- <span>{{ cart.coupon.valid_to|date:"D, d M,h a" }}</span>
-							</td>
-							<td>
-								{% if active %} Applied {% else %} Expired {% endif %}
-							</td>
-						</tr>
-						{% endwith %}
-						{% endif %}
-						<tr>
-							<td>Tax</td>
-							<td>$0.00</td>
-						</tr>
-					</tbody>
-					<tfoot>
-						<tr>
-							<td>Order Total</td>
-							<td>${{ cart.get_total_price_after_discount|floatformat:"2"}}</td>
-						</tr>
-					</tfoot>
-				</table>
-			
-				<div class="checkout-methods">
-					<a href="{% url 'orders:order_create' %}" class="btn w-100 btnD2">Make Payment</a>
-				</div>
+                <ul class="bg-light p-3">
+                    {% for item in cart %}
+                    {% with product=item.product %}
+                    <li class="d-flex justify-content-between mb-3">
+                        <span>{{ item.quantity}}x
+                            <a href="{% url 'products:product_detail' product.id product.slug  %}">
+                                {{ product.name|truncatewords:7 }}
+                            </a></span>
+                        <span>${{ item.total_price|floatformat:"2" }}</span>
+                    </li>
+                    {% endwith %}
+                    {% endfor %}
+                    {% if cart.coupon %}
+                    <li class="d-flex justify-content-between">
+                        <span>Sub-Total: </span>
+                        <span>${{ cart.get_total_price }}</span>
+                    </li>
+                    <li class="d-flex justify-content-between">
+                        <span>{{ cart.coupon.code}}({{ cart.coupon.discount }}%)</span>
+                        <span>-${{ cart.get_discount|floatformat:"2" }}</span>
+                    </li>
+                    {% with active=cart.coupon.is_active %}
+                    <li class="d-flex justify-content-between">
+                        <span>Valid Upto- {{ cart.coupon.valid_to|date:"D,d M, h a" }}</span>
+                        <span>{% if active %}Applied{% else %}Expired{% endif %}</span>
+                    </li>
+                    {% endwith %}
+                    {% endif %}
+                    <li class="d-flex justify-content-between">
+                        <span>Total</span>
+                        <span>${{ cart.get_total_price_after_discount|floatformat:"2" }}</span>
+                    </li>
+                </ul>
 			</div>
 		</div>
     </div>
@@ -158,56 +137,6 @@
     </div>
 </div>
 
-<div class="jumbotron jumbotron-fluid">
-    <div class="container">
-        <div class="row mt-5">
-            <div class="col-md-8">
-                <form method="post">
-                    <h4>Add new Address</h4><br>
-                    {% csrf_token %}
-                    {{ address_form|crispy }}
-                    <button type="submit" class="btn btn-primary">Place Order</button>
-                </form>
-            </div>
-            <div class="col-md-4">
-                <ul class="bg-light p-3" style="border-bottom: 5px groove greenyellow; border-radius: 5px;">
-                    {% for item in cart %}
-                        {% with product=item.product %}
-                        <li class="d-flex justify-content-between mb-3">
-                            <span>{{ item.quantity}}x 
-                            <a href="{% url 'products:product_detail' product.id product.slug  %}">
-                                {{ product.name|truncatewords:7 }}
-                            </a></span>
-                            <span>${{ item.total_price|floatformat:"2" }}</span>
-                        </li>
-                        {% endwith %}
-                    {% endfor %}
-                    {% if cart.coupon %}
-                    <li class="d-flex justify-content-between">
-                        <span>Sub-Total: </span>
-                        <span>${{ cart.get_total_price }}</span>
-                    </li>
-                    <li class="d-flex justify-content-between">
-                        <span>{{ cart.coupon.code}}({{ cart.coupon.discount }}%)</span>
-                        <span>-${{ cart.get_discount|floatformat:"2" }}</span>
-                    </li>
-                    {% with active=cart.coupon.is_active %}
-                    <li class="d-flex justify-content-between">
-                        <span>Valid Upto- {{ cart.coupon.valid_to|date:"D,d M, h a" }}</span>
-                        <span>{% if active %}Applied{% else %}Expired{% endif %}</span>
-                    </li>
-                    {% endwith %}
-                    {% endif %}
-                    <li class="d-flex justify-content-between">
-                        <span>Total</span>
-                        <span>${{ cart.get_total_price_after_discount|floatformat:"2" }}</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-</div>
 {% endblock %}
 
 {% block extra_scripts %}
@@ -216,12 +145,33 @@
 
             var showModal = "{{ modal }}";
             if (showModal == "True"){
-                console.log('opengin');
-                $("#newAddressBtn").click();
+                $("#newAddressModal").modal('show');
             }
 
             $("#newAddressModal input").addClass("form-control-sm");
             $("#newAddressModal select").addClass("form-control-sm");
+
+            $(".remove-btn a").on('click', function(e){
+                e.preventDefault();
+                var adr_id = parseInt($(this).data("address-id"));
+
+                $.post({
+                    url: "{% url 'accounts:address_delete_ajax' %}",
+                    data: {
+                        'adr_id': adr_id,
+                    },
+                    dataType: 'json',
+                    success: function(data){
+                        if(data['status']=='ok'){
+                            console.log('address deleted');
+                            $("#address-box-"+adr_id).parent().remove();
+                            alert("Address Deleted successfully!")
+                        }else{
+                            alert('Sorry, Something went wrong!');
+                        }
+                    }
+                })
+            });
 
             $("#newAddressBtn").on('click', function(){
                 $("#addressModalForm").submit();
@@ -230,7 +180,7 @@
             $("#newAddressModal").on('shown.bs.modal', function(){
                 $('.header-nav').css('display', 'none');
             });
-            $("#newAddressModal").on('hiden.bs.modal', function(){
+            $("#newAddressModal").on('hidden.bs.modal', function(){
                 $('.header-nav').css('display', 'block');
             });
         });

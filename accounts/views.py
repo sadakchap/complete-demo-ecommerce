@@ -4,6 +4,8 @@ from django.contrib.auth import login, logout, authenticate, get_user_model
 from .forms import UserLoginForm, UserRegisterForm, UserAddressForm
 from django.contrib import messages
 from django.conf import settings
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
@@ -14,6 +16,7 @@ from .tokens import account_activation_token
 from .models import UserAddress
 from orders.models import Order
 from cart.cart import Cart
+
 
 User = get_user_model()
 
@@ -133,3 +136,19 @@ def delete_user_address(request, adr_id):
         address.delete()
         return redirect('accounts:address_list')
     return render(request, "accounts/address_delete.html", {'address': address})
+
+@require_POST
+def delete_user_address_ajax(request):
+    data = {
+        'status': 'ko',
+    }
+    adr_id = request.POST.get('adr_id')
+    if adr_id:
+        try:
+            address = UserAddress.objects.get(id=adr_id)
+        except UserAddress.DoesNotExist:
+            return JsonResponse(data)
+        address.delete()
+        data['status'] = 'ok'
+        return JsonResponse(data)
+    return JsonResponse(data)

@@ -12,4 +12,5 @@ urlpatterns = [
     path('address/create/', views.add_user_address, name='address_create'),
     path('address/edit/<int:adr_id>/', views.edit_user_address, name='address_edit'),
     path('address/delete/<int:adr_id>/', views.delete_user_address, name='address_delete'),
+    path('address/delete/ajax/', views.delete_user_address_ajax, name='address_delete_ajax'),
 ]
