@@ -10,6 +10,7 @@ DONE ---- 13. product quick view modal
 DONE ---- 20. design footer
 DONE ---- 25. Implement swiper on product_detail.html for featured products
 DOBE ---- 23. Ajax call for address delete on order summary/ create page
+DONE ---- 26. order summary dropdown smooth transistion
 
 3. design home page...
 4. check product stock before addding to stock and while creating order also.
@@ -30,7 +31,6 @@ one payment_status.html and show the msg accordingly).
 22. show network error on ajax if there is
 24. fix images height on cart_detail.html
 
-26. order summary dropdown smooth transistion
 23. Generate unique order id for transaction to paytm
 25. order_create view
 26. if somehow transaction fails then order will have paid=False,

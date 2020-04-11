@@ -78,7 +78,7 @@ def order_create(request, adr_id):
         send_invoice_order.delay(order.id) #launchinf async task
         request.session['order_id'] = order.id
         return redirect(reverse('payments:process'))  
-    return render(request, "orders/order_form.html", {'address_form': address_form, 'cart': cart, 'addresses': addresses, 'modal': modal})
+    return render(request, "orders/order_summary.html", {'address_form': address_form, 'cart': cart, 'addresses': addresses, 'modal': modal})
 
 
 @staff_member_required
