@@ -1,0 +1,12 @@
+.address-box{
+    padding: .9rem .5rem;
+    box-shadow: 2px 5px 5px #00000033, 0 0 1px #0000001a;
+}
+.address-box address{
+    font-size: .9rem;
+    font-weight: 400;
+    letter-spacing: .5px;
+    text-transform: capitalize;
+    line-height: 2rem;
+    margin-bottom: 2em;
+}

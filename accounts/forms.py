@@ -106,7 +106,7 @@ class UserAddressForm(forms.ModelForm):
     country_code = forms.CharField(max_length=4, widget=forms.Select(
         choices=COUNTRY_CODES), help_text='Choose from dropdown')
     phone       = forms.CharField(max_length=13, help_text='Enter phone number like "123-456-7890" ')
-    pin_code    = forms.CharField(max_length=6, help_text='Enter valid pin code')  
+    pin_code    = forms.CharField(label='zip/postal code',max_length=6, help_text='Enter valid pin code')  
     line_1      = forms.CharField(label="Street No.", max_length=255)
     line_2      = forms.CharField(label="Colony, Locality, Village", max_length=255)
 

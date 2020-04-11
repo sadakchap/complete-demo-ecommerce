@@ -15,9 +15,9 @@ body{
 
 .btnD1{
     position: relative;
-    /* margin: 1em .3em; */
     padding: 10px 30px;
     border: 1px solid #000;
+    background: #fff;
     text-transform: uppercase;
     color: #000;
     border-radius: 0 !important;
@@ -26,7 +26,6 @@ body{
 }
 .btnD2{
     position: relative;
-    /* margin: 1em .3em; */
     padding: 10px 30px;
     border: 1px solid #fff;
     background: #000;

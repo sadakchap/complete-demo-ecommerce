@@ -26,13 +26,16 @@ def order_create(request, adr_id=None):
     addresses = user.addresses.all()
     address = None
     address_form = UserAddressForm(request.POST or None)
+    modal = False
 
     if adr_id:
         address = get_object_or_404(UserAddress, id=adr_id)
-    if address_form.is_valid():
-        address = address_form.save(commit=False)
-        address.user = request.user
-        address.save()
+    if request.method == 'POST':
+        modal = True
+        if address_form.is_valid():
+            address = address_form.save(commit=False)
+            address.user = request.user
+            address.save()
     # create or update order when we got address else user might have entered wrong info
     if address:
         order_qs = Order.objects.filter(user=user, paid=False)
@@ -66,7 +69,7 @@ def order_create(request, adr_id=None):
         return redirect(reverse('payments:process'))
         # return render(request, "orders/order_created.html", {'order': order})        
     
-    return render(request, "orders/order_form.html", {'address_form': address_form, 'cart': cart, 'addresses': addresses})
+    return render(request, "orders/order_form.html", {'address_form': address_form, 'cart': cart, 'addresses': addresses, 'modal': modal})
 
 
 @staff_member_required

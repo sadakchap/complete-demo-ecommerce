@@ -2,6 +2,25 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block extrastyles %}
+    <link rel="stylesheet" href="{% static 'orders/order_create.css' %}">
+    <style>
+        .modal-content label{
+            font-size: .7rem !important;
+            font-weight: 500;
+            letter-spacing: .4px;
+            text-transform: uppercase;
+        }
+        span.asteriskField{
+            color: #f00;
+        }
+        #newAddressModal input:focus,
+        #newAddressModal input:active,
+        #newAddressModal select:focus,
+        #newAddressModal select:active{
+            box-shadow: none !important;
+            border: 1px solid black;
+        }
+    </style>
 {% endblock %}
 {% block page_title %}Order - Maa Shop{% endblock %}
 {% block content %}
@@ -13,7 +32,35 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-9">
-
+            <div class="row">
+                {% if addresses %}
+                    {% for adr in addresses %}
+                        <div class="col-12 col-md-4">
+                            <div class="address-box">
+                                <address>
+                                    {{ adr.full_name|title }} <br>
+                                    {{ adr.line_1 }}, {{ adr.city }} <br>
+                                    {{ adr.state }}, {{ adr.pin_code }} <br>
+                                    {{ adr.phone }}
+                                </address>
+                                <div class="w-100">
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <a href="{% url 'accounts:address_edit' adr.id %}" class="btn btn-sm"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
+                                    <a href="{% url 'orders:order_create' adr.id %}" class="btn btnD1">Deliver Here</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="row">
+                <div class="mt-4 ml-3">
+                    <button type="button" class="btn btnD2" data-toggle="modal" data-target="#newAddressModal">
+                        <i class="fa fa-plus" aria-hidden="true"></i> New Address
+                    </button>
+                </div>
+            </div>
         </div>
         <div class="col-lg-3">
 			<div class="cart-summary">
@@ -61,24 +108,58 @@
     </div>
 </div>
 
+<!-- Modal for new address -->
+<div class="modal fade bd-example-modal-lg" id="newAddressModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Add New Address</h5>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="addressModalForm">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="form-group col-12 col-lg-12">
+                            {{ address_form.full_name|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-lg-3 mb-0">
+                            {{ address_form.country_code|as_crispy_field }}
+                        </div>
+                        <div class="form-group col-lg-5 mb-0">
+                            {{ address_form.phone|as_crispy_field }}
+                        </div>
+                        <div class="form-group col-lg-4 mb-0">
+                            {{ address_form.pin_code|as_crispy_field }}
+                        </div>
+                    </div>
+                    {{ address_form.line_1|as_crispy_field }}
+                    {{ address_form.line_2|as_crispy_field }}
+                    <div class="form-row">
+                        <div class="form-group col-lg-3 mb-0">
+                            {{ address_form.landmark|as_crispy_field }}
+                        </div>
+                        <div class="form-group col-lg-4 mb-0">
+                            {{ address_form.city|as_crispy_field }}
+                        </div>
+                        <div class="form-group col-lg-5 mb-0">
+                            {{ address_form.state|as_crispy_field }}
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btnD1" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btnD2" id="newAddressBtn">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
-        <div class="address d-flex">
-            {% if addresses %}
-                {% for adr in addresses %}
-                    <div class="address-card m-1 p-1 border">
-                        <p class="font-weight-bold">{{ adr.full_name|title }}</p>
-                        <p>{{ adr.line_2 }}</p>
-                        <p>{{ adr.line_1 }}</p>
-                        <p>{{ adr.city }}, {{ adr.state }}</p>
-                        <p>{{ adr.pin_code }}</p>
-                        <a href="{% url 'orders:order_create' adr.id %}">Deliver to address</a>
-                        <a href="{% url 'accounts:address_edit' adr.id %}">Edit</a>
-                        <a href="{% url 'accounts:address_delete' adr.id %}">delete</a>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        </div>
         <div class="row mt-5">
             <div class="col-md-8">
                 <form method="post">
@@ -131,6 +212,28 @@
 
 {% block extra_scripts %}
     <script>
+        $(document).ready(function(){
+
+            var showModal = "{{ modal }}";
+            if (showModal == "True"){
+                console.log('opengin');
+                $("#newAddressBtn").click();
+            }
+
+            $("#newAddressModal input").addClass("form-control-sm");
+            $("#newAddressModal select").addClass("form-control-sm");
+
+            $("#newAddressBtn").on('click', function(){
+                $("#addressModalForm").submit();
+            });
+
+            $("#newAddressModal").on('shown.bs.modal', function(){
+                $('.header-nav').css('display', 'none');
+            });
+            $("#newAddressModal").on('hiden.bs.modal', function(){
+                $('.header-nav').css('display', 'block');
+            });
+        });
         // add onchange validation for fields
         // id_phone 
         // id_pin_code
