@@ -16,6 +16,11 @@
     <div class="row">
         <div class="col-lg-9">
             <div class="row">
+                <div class="col-12">
+                    <h2 class="display-4  border-bottom" style="font-size: 2rem;">Shipping Address</h2>
+                </div>
+            </div>
+            <div class="row">
                 {% if address_list %}
                     {% for adr in address_list %}
                         <div class="col-12 col-md-4">
@@ -29,7 +34,7 @@
                                 <div class="remove-btn">
                                     <a href="" data-address-id="{{ adr.id }}" ><i class="fa fa-times"></i></a>
                                 </div>
-                                <div class="d-flex justify-content-between align-items-center">
+                                <div class="address-action">
                                     <a href="{% url 'accounts:address_edit' adr.id %}" class="btn btn-sm"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
                                     <a href="{% url 'orders:order_create' adr.id %}" class="btn btnD1">Deliver Here</a>
                                 </div>
@@ -147,6 +152,12 @@
             if (showModal == "True"){
                 $("#newAddressModal").modal('show');
             }
+            
+            $(".address-box").first().addClass('active');
+            $(".address-box").on("click", function(e){
+                $(this).parent().siblings().children().removeClass('active');
+                $(this).addClass('active');
+            });
 
             $("#newAddressModal input").addClass("form-control-sm");
             $("#newAddressModal select").addClass("form-control-sm");

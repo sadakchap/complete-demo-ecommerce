@@ -28,9 +28,10 @@ one payment_status.html and show the msg accordingly).
 19. design product quantity on quick view, detail
 21. newsletter subscribe on footer and links
 22. show network error on ajax if there is
-
-23. Generate unique order id for transaction to paytm
 24. fix images height on cart_detail.html
+
+26. order summary dropdown smooth transistion
+23. Generate unique order id for transaction to paytm
 25. order_create view
 26. if somehow transaction fails then order will have paid=False,
  remind the user to complete the payment or delete the order on every page, like showing
