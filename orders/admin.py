@@ -20,7 +20,7 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = ['id', 'paid', 'full_name', 'email_id','get_address', 'get_phone','created', order_detail, order_pdf]
     list_filter = ['paid', 'created', 'updated']
     inlines = [OrderItemInline]
-    # list_display_links = None
+    list_display_links = None
 
     def full_name(self, obj):
         return obj.address.full_name

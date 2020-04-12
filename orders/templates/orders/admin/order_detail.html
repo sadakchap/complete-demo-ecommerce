@@ -48,6 +48,14 @@
             <th>Payment Status</th>
             <td>{% if order.paid %} Paid {% else %} Pending {% endif %}</td>
         </tr>
+        <tr>
+            <th>Paytm unique order id</th>
+            <td>{% if order.paid %} {{ order.paytm_order_id}} {% else %} None {% endif %}</td>
+        </tr>
+        <tr>
+            <th>Paytm transaction Id</th>
+            <td>{% if order.paid %} {{ order.paytm_txn_id }} {% else %} None {% endif %}</td>
+        </tr>
 
     </table>
 

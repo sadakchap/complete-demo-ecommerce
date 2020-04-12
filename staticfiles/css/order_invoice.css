@@ -90,6 +90,21 @@ body{
     border-radius: 2px;
     background-color: lightsteelblue;
 }
+
+.more-info{
+    margin-top: 3rem;
+}
+.more-info h4{
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+.more-info p{
+    padding-left: .5rem;
+    font-size: .8rem;
+    letter-spacing: .4px;
+    color: lightslategrey;
+}
+
 .product-detail{
     width: 100%;
     margin: 3em auto;

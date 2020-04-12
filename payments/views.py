@@ -14,10 +14,10 @@ from .paytm import Checksum
 
 def payment_process(request):
     order_id = request.session.get('order_id')
-    order = get_object_or_404(Order, id=order_id)
+    order = get_object_or_404(Order, paytm_order_id=order_id)
     params = {
         "MID": settings.PAYMENT_MERCHANT_ID,
-        "ORDER_ID": str(order.id),
+        "ORDER_ID": str(order_id),
         "CUST_ID": str(order.user.email),
         # "TXN_AMOUNT": str(order.get_total_cost()), # "%.2f" % order.get_total_cost()
         "TXN_AMOUNT": "%.2f" % order.get_total_cost_after_discount(),
@@ -31,12 +31,12 @@ def payment_process(request):
     return render(request, "payments/paytm.html", {'params': params, 'order': order})
 
 
-# payment will send a POST request on our website
+# paytm will send a POST request on our website
 @csrf_exempt
 def handle_paytm_response(request):
     if request.method == "POST":
         order_id = request.POST.get("ORDERID")
-        order = get_object_or_404(Order, id=order_id)
+        order = get_object_or_404(Order, paytm_order_id=order_id)
 
         response_dict = {}
         for key in request.POST.keys():

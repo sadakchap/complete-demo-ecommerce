@@ -47,38 +47,29 @@ def order_summary(request):
 
 @login_required
 def order_create(request, adr_id):
+    cart = Cart(request)
+    user = request.user
     address = get_object_or_404(UserAddress, id=adr_id)
-    
-    order_qs = Order.objects.filter(user=user, paid=False)
-    if order_qs.exists():
-        order = order_qs[0]
-    else:
-        order = Order.objects.create(user=user, address=address)
+    order = Order.objects.create(user=user, address=address)
+    for item in cart:
+        product = item['product']
+        quantity = item['quantity']
+        OrderItem.objects.create(order=order, product=product, price=item['price'],
+                                 quantity=quantity)
+        product.stock -= quantity
+        product.save()
+    # if cart has discount coupon applicable then save its info on order 
+    if cart.coupon and cart.coupon.is_active():
+        order.coupon = cart.coupon
+        order.discount = cart.coupon.discount
+        order.save()
 
-        for item in cart:
-            product = item['product']
-            quantity = item['quantity']
-            if order.items.filter(product_id=product.id):
-                order_item = order.items.get(product_id=product.id)
-                order_item.quantity += quantity
-                order_item.save()
-            else:
-                OrderItem.objects.create(order=order,product=product, price=item['price'],
-                                    quantity=quantity)
-            # update product stock quantity
-            product.stock -= quantity
-            product.save()
-        if cart.coupon:
-            order.coupon = cart.coupon
-            order.discount = cart.coupon.discount
-            order.save()
-
-            # clear the cart
-        cart.clear()
-        send_invoice_order.delay(order.id) #launchinf async task
-        request.session['order_id'] = order.id
-        return redirect(reverse('payments:process'))  
-    return render(request, "orders/order_summary.html", {'address_form': address_form, 'cart': cart, 'addresses': addresses, 'modal': modal})
+    cart.clear()
+    send_invoice_order.delay(order.id)  # launchinf async task
+    unique_order_id = order.set_unique_paytm_order_id()
+    print(unique_order_id)
+    request.session['order_id'] = unique_order_id
+    return redirect(reverse('payments:process'))
 
 
 @staff_member_required

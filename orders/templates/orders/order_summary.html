@@ -89,6 +89,13 @@
                                 {% endwith %}
                             {% endfor %}
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2" style="padding: 0;">
+                                    <a href="{% url 'cart:cart_detail' %}" class="btn btnD1 w-100">Change quantity or product</a>
+                                </td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
 			</div>

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order detail {{order.id }}</title>
+    <link rel="stylesheet" href="/staticfiles/css/order_invoice.css">
 
 </head>
 <body>
@@ -60,6 +61,11 @@
                 </div>
             </div>
             
+            <div class="more-info" style="margin-top: 3rem;">
+                <h4>Order Transaction Id</h4>
+                <p>{{ order.paytm_txn_id }}</p>
+            </div>
+
             <div class="product-detail">
                 <table id="products">
                     <thead>
