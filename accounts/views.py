@@ -14,8 +14,8 @@ from django.utils.encoding import force_bytes, force_text
 from .tokens import account_activation_token
 
 from .models import UserAddress
-from orders.models import Order
-from cart.cart import Cart
+# from orders.models import Order
+# from cart.cart import Cart
 
 
 User = get_user_model()
@@ -33,13 +33,13 @@ def login_view(request):
             if user:
                 login(request, user)
                 # if user has order and not paid then add all the items to the cart session also
-                if Order.objects.filter(user=user, paid=False):
-                    cart = Cart(request)
-                    order = Order.objects.filter(user=user, paid=False)[0]
-                    for item in order.items.all():
-                        prod = item.product
-                        quan = item.quantity
-                        cart.add(product=prod, quantity=quan)
+                # if Order.objects.filter(user=user, paid=False):
+                #     cart = Cart(request)
+                #     order = Order.objects.filter(user=user, paid=False)[0]
+                #     for item in order.items.all():
+                #         prod = item.product
+                #         quan = item.quantity
+                #         cart.add(product=prod, quantity=quan)
                 # redirect user to desired path
                 if _next:
                     return redirect(_next)

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extrastyles %}
+    <link rel="stylesheet" href="{% static 'payments/payment_status.css' %}">
+{% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="order-summary">
+                {% with ordered_items=order.items %}
+                <h3 style="font-size: 1.2rem; font-weight: 300;">Order Summary</h3>
+                <h4>
+                    <p class="btn w-100 border-bottom border-top">
+                        <span>{{ ordered_items.count }} Products Ordered</span>
+                    </p>
+                </h4>
+                <div>
+                    <table class="table table-mini-cart">
+                        <tbody>
+                            {% for item in ordered_items.all %}
+                            {% with product=item.product %}
+                            <tr>
+                                <td class="product-col">
+                                    <div class="product-image-container">
+                                        <a href="{{ product.get_absolute_url }}">
+                                            <img src="{{ product.image.url }}" alt="">
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <h4>
+                                            <a href="{{ product.get_absolute_url }}">
+                                                {{ product.name|truncatewords:"5" }}
+                                            </a>
+                                        </h4>
+                                        <span class="product-qty">Qty: {{ item.quantity }}</span>
+                                    </div>
+                                </td>
+                                <td class="price-col">
+                                    ${{ item.get_cost|floatformat:"2" }}
+                                </td>
+                            </tr>
+                            {% endwith %}
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td>Total: </td>
+                                <td>${{ order.get_total_cost_after_discount }}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                {% endwith %} 
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="payment-status-wrapper">
+                <div class="payment-icon">
+                    <div class="icon-box {% if success %}success{% endif %}">
+                        {% if success %}
+                            <i class="fa fa-check green" aria-hidden="true"></i>
+                        {% else %}
+                            <i class="fa fa-times red" aria-hidden="true"></i>
+                        {% endif %}
+                    </div>
+                    <div class="txn-amt">
+                        <span>${{ resp_dict.TXNAMOUNT }}</span>
+                    </div>
+                </div>
+                <div class="payment-detail">
+                    <div class="row"> 
+                        <div class="col-6 col-lg-6 key">Transaction Id:</div>
+                        <div class="col-6 col-lg-6 value">{{ resp_dict.TXNID }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 col-lg-6 key">Transaction Date & Time:</div>
+                        <div class="col-6 col-lg-6 value">{{ resp_dict.TXNDATE }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 col-lg-6 key">Order Id:</div>
+                        <div class="col-6 col-lg-6 value">{{ resp_dict.ORDERID }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block extra_scripts %}
+    <script>
+        $(document).ready(function(){
+
+        });
+    </script>
+{% endblock %}

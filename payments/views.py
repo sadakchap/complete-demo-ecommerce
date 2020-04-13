@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.urls import reverse
 from django.template.loader import render_to_string
@@ -12,6 +13,7 @@ from .paytm import Checksum
 
 # Create your views here.
 
+@login_required
 def payment_process(request):
     order_id = request.session.get('order_id')
     order = get_object_or_404(Order, paytm_order_id=order_id)
@@ -27,13 +29,15 @@ def payment_process(request):
         "CALLBACK_URL": request.build_absolute_uri(reverse('payments:handle-response'))
     }
     params['CHECKSUMHASH'] = Checksum.generate_checksum(params, settings.PAYMENT_MERCHANT_KEY)
-    print(params)
     return render(request, "payments/paytm.html", {'params': params, 'order': order})
 
 
 # paytm will send a POST request on our website
 @csrf_exempt
 def handle_paytm_response(request):
+    context = {
+        'success': False,
+    }
     if request.method == "POST":
         order_id = request.POST.get("ORDERID")
         order = get_object_or_404(Order, paytm_order_id=order_id)
@@ -67,18 +71,20 @@ def handle_paytm_response(request):
                 email.attach(f'order_{order.id}.pdf', out.getvalue(), 'application/pdf')
                 # send email
                 email.send()
-                return redirect('payments:done', order_id=order.id)
+                context['success'] = True
             else:
-                return redirect('payments:cancel', resp_msg=response_dict['RESPMSG'])
+                context['success'] = False
         else:
-            print("order unsuccessful because "+response_dict['RESPMSG'])
             return redirect('payments:cancel', resp_msg=response_dict['RESPMSG'])
+        context['resp_dict'] = response_dict
+        context['order'] = order
+    return render(request, "payments/payment_status.html", context=context)
 
-
+@login_required
 def payment_done(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     return render(request, "payments/done.html", {'order': order})
 
-
+@login_required
 def payment_cancel(request, resp_msg=None):
     return render(request, "payments/cancel.html", {'resp_msg': resp_msg})

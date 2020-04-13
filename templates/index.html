@@ -279,6 +279,12 @@
 
 								// if from quick view modal
 							}
+
+							if($("#empty-cart").length){
+								$("#empty-cart").remove();
+							}
+
+
 							if(is_modal){
 								btn.html('<i class="fa fa-shopping-bag" aria-hidden="true"></i> Go to cart');
 							}

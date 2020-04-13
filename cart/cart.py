@@ -78,7 +78,7 @@ class Cart(object):
         return Decimal('0')
     
     def get_total_price_after_discount(self):
-        if self.coupon.is_active():
+        if self.coupon and self.coupon.is_active():
             return self.get_total_price() - self.get_discount()
         return self.get_total_price()
             

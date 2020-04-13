@@ -67,7 +67,6 @@ def order_create(request, adr_id):
     cart.clear()
     send_invoice_order.delay(order.id)  # launchinf async task
     unique_order_id = order.set_unique_paytm_order_id()
-    print(unique_order_id)
     request.session['order_id'] = unique_order_id
     return redirect(reverse('payments:process'))
 
