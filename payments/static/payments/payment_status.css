@@ -97,17 +97,15 @@ tbody .product-col {
     color: #777474;
     font-weight: 300;
 }
-.payment-detail{
-    padding: .5rem 1.2rem;
-}
 .payment-detail > div{
     margin: .9rem .5rem !important;
 }
-.payment-detail > div span.key{
+.payment-detail > div .key{
     font-size: 1.1rem;
     font-weight: 500;
 }
-.payment-detail > div span.value{
-    font-size: .9rem;
+.payment-detail > div .value{
+    font-size: .89rem;
     font-weight: 400;
+    word-wrap: break-word;
 }

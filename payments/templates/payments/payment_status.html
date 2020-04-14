@@ -13,7 +13,7 @@
                 <h3 style="font-size: 1.2rem; font-weight: 300;">Order Summary</h3>
                 <h4>
                     <p class="btn w-100 border-bottom border-top">
-                        <span>{{ ordered_items.count }} Products Ordered</span>
+                        <span>{{ ordered_items.count }} Product{{ ordered_items.count|pluralize }} Ordered</span>
                     </p>
                 </h4>
                 <div>
@@ -70,15 +70,15 @@
                     </div>
                 </div>
                 <div class="payment-detail">
-                    <div class="row"> 
+                    <div class="row border-bottom"> 
                         <div class="col-6 col-lg-6 key">Transaction Id:</div>
                         <div class="col-6 col-lg-6 value">{{ resp_dict.TXNID }}</div>
                     </div>
-                    <div class="row">
+                    <div class="row border-bottom">
                         <div class="col-6 col-lg-6 key">Transaction Date & Time:</div>
                         <div class="col-6 col-lg-6 value">{{ resp_dict.TXNDATE }}</div>
                     </div>
-                    <div class="row">
+                    <div class="row border-bottom">
                         <div class="col-6 col-lg-6 key">Order Id:</div>
                         <div class="col-6 col-lg-6 value">{{ resp_dict.ORDERID }}</div>
                     </div>

@@ -87,3 +87,7 @@ def admin_order_pdf(request, order_id):
         weasyprint.CSS(settings.STATIC_ROOT +'\\' + 'css/order_invoice.css')
     ])
     return response
+
+@login_required
+def user_pending_order_action(request, order_id):
+    pass

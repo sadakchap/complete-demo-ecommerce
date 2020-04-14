@@ -18,6 +18,7 @@ DONE ---- 5. design payment_status html page
 DONE ---- 8. On order payment successfull show user its transaction id(simply just delete done and canel views and have 
 one payment_status.html and show the msg accordingly).
 DONE ---- 9. have a button to go "home" page of payment_status.html page
+DONE ---- 27. responsive payment_status.html
 
 3. design home page...
 4. check product stock before addding to stock and while creating order also.
@@ -36,7 +37,6 @@ DONE ---- 9. have a button to go "home" page of payment_status.html page
 26. if somehow transaction fails then order will have paid=False,
  remind the user to complete the payment or delete the order on every page, like showing
  messages
-27. responsive payment_status.html
 
 CANCELLED---14. django serialize django model object
 CANCELLED---5. design payment success and cancel html pages
