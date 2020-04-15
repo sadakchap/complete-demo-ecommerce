@@ -7,10 +7,11 @@ import json
 
 from .models import Category, Product
 from cart.forms import CartAddProductForm
+from orders.decorators import no_active_order_msg
 
 # Create your views here.
 
-
+@no_active_order_msg
 def home_view(request):
     product_list = Product.objects.order_by('-discount_percent')
     products_on_sale = [prod for prod in product_list if prod.discount_percent]
@@ -20,6 +21,7 @@ def home_view(request):
         'featured_products': featured_products[:8],
     })
     
+@no_active_order_msg
 def product_list(request, category_slug=None):
     category = None
     categories = Category.objects.all()
@@ -48,6 +50,7 @@ def product_list(request, category_slug=None):
         'categories': categories
     })
 
+@no_active_order_msg
 def product_detail(request, id, slug):
     featured_products = Product.objects.filter(featured=True)
     product = get_object_or_404(Product, id=id, slug=slug)

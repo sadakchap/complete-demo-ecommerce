@@ -22,6 +22,8 @@ class Order(models.Model):
     discount    = models.IntegerField(default=0, validators=[MinValueValidator(5), MaxValueValidator(100)])
     paytm_txn_id= models.CharField(max_length=255, blank=True, null=True)
     paytm_order_id = models.CharField(max_length=255, blank=True, null=True)
+    cancelled      = models.BooleanField(default=False)
+    txn_time    = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         ordering = ('-created',)

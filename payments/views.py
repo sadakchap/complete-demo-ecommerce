@@ -7,6 +7,9 @@ from django.template.loader import render_to_string
 from io import BytesIO
 import weasyprint
 from django.core.mail import EmailMessage
+from django.contrib import messages
+
+from datetime import datetime
 
 from orders.models import Order
 from .paytm import Checksum
@@ -14,12 +17,12 @@ from .paytm import Checksum
 # Create your views here.
 
 @login_required
-def payment_process(request):
-    order_id = request.session.get('order_id')
-    order = get_object_or_404(Order, paytm_order_id=order_id)
+def payment_process(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    unique_order_id = order.set_unique_paytm_order_id()
     params = {
         "MID": settings.PAYMENT_MERCHANT_ID,
-        "ORDER_ID": str(order_id),
+        "ORDER_ID": str(unique_order_id),
         "CUST_ID": str(order.user.email),
         # "TXN_AMOUNT": str(order.get_total_cost()), # "%.2f" % order.get_total_cost()
         "TXN_AMOUNT": "%.2f" % order.get_total_cost_after_discount(),
@@ -55,6 +58,9 @@ def handle_paytm_response(request):
                 # update order
                 order.paid = True
                 order.paytm_txn_id = response_dict.get("TXNID")
+                txn_datetime = response_dict.get('TXNDATE')
+                txn_datetime = datetime.strptime(txn_datetime, "%Y-%m-%d %I:%M:%S.0")
+                order.txn_time = txn_datetime
                 order.save()
                 #sending invoice via email
                 sub = f'Maa Shop- Invoice no- {order.id}'
@@ -72,12 +78,17 @@ def handle_paytm_response(request):
                 # send email
                 email.send()
                 context['success'] = True
+                messages.success(request, 'Transaction successfull!')
+
             else:
                 context['success'] = False
+                messages.error(request, 'Transaction Failed!')
         else:
+            messages.warning(request, 'Gol maal bhai sab gol maal!')
             return redirect('payments:cancel', resp_msg=response_dict['RESPMSG'])
         context['resp_dict'] = response_dict
         context['order'] = order
+    print(response_dict)
     return render(request, "payments/payment_status.html", context=context)
 
 @login_required

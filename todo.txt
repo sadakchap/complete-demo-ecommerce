@@ -15,8 +15,9 @@ DONE ---- 23. Generate unique order id for transaction to paytm
 DONE ---- 25. order_create view
 DONE ---- 7. design checkout page, and its view function also(break it neccessary)
 DONE ---- 5. design payment_status html page
-DONE ---- 8. On order payment successfull show user its transaction id(simply just delete done and canel views and have 
-one payment_status.html and show the msg accordingly).
+DONE ---- 8. On order payment successfull show user its transaction id(simply just 
+            delete done and canel views and have one payment_status.html and 
+            show the msg accordingly).
 DONE ---- 9. have a button to go "home" page of payment_status.html page
 DONE ---- 27. responsive payment_status.html
 
@@ -35,8 +36,8 @@ DONE ---- 27. responsive payment_status.html
 24. fix images height on cart_detail.html
 
 26. if somehow transaction fails then order will have paid=False,
- remind the user to complete the payment or delete the order on every page, like showing
- messages
+ remind the user to complete the payment or delete the order on 
+ every page, like showing messages
 
 CANCELLED---14. django serialize django model object
 CANCELLED---5. design payment success and cancel html pages

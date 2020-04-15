@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block extrastyles %}
+<link rel="stylesheet" href="{% static 'orders/order_create.css' %}">
+
+{% endblock %}
+{% block page_title %}Order - Maa Shop{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <div class="page-header">
+        <h1>checkout</h1>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="display-4  border-bottom" style="font-size: 2rem;">Shipping Address</h2>
+                </div>
+            </div>
+            <div class="row">
+                {% if address_list %}
+                {% for adr in address_list %}
+                <div class="col-12 col-md-4">
+                    <div class="address-box {% if adr.id == order.address.id %}active{% endif %}" id="address-box-{{ adr.id }}">
+                        <address>
+                            {{ adr.full_name|title }} <br>
+                            {{ adr.line_1 }}, {{ adr.city }} <br>
+                            {{ adr.state }}, {{ adr.pin_code }} <br>
+                            {{ adr.phone }}
+                        </address>
+                        <div class="remove-btn">
+                            <a href="" data-address-id="{{ adr.id }}"><i class="fa fa-times"></i></a>
+                        </div>
+                        <div class="address-action">
+                            <a href="{% url 'accounts:address_edit' adr.id %}" class="btn btn-sm"><i
+                                    class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
+                            <a href="{% url 'orders:pending_order_update' adr.id order.id %}" class="btn btnD1">Deliver Here</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div class="row">
+                <div class="mt-4 ml-3">
+                    <button type="button" class="btn btnD2" data-toggle="modal" data-target="#newAddressModal">
+                        <i class="fa fa-plus" aria-hidden="true"></i> New Address
+                    </button>
+                    <a href="{% url 'orders:cancel_pending_order' order.id %}" class="btn btnD1">
+                        Cancel the Order
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="order-summary">
+                <h3 style="font-size: 1.2rem; font-weight: 300;">Summary</h3>
+                <h4>
+                    <a class="btn w-100 d-flex justify-content-between border-bottom border-top" data-toggle="collapse"
+                        href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        {% with length=order.items.count %}
+                        <span>{{ length }} product{{ length|pluralize }} in Order</span>
+                        <span><i class="fa fa-angle-down" aria-hidden="true"></i></span>
+                        {% endwith %}
+                    </a>
+                </h4>
+                <div class="collapse" id="collapseExample">
+                    <table class="table table-mini-cart">
+                        <tbody>
+                            {% for item in order.items.all %}
+                            {% with product=item.product %}
+                            <tr>
+                                <td class="product-col">
+                                    <div class="product-image-container">
+                                        <a href="{{ product.get_absolute_url }}">
+                                            <img src="{{ product.image.url }}" alt="">
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <h4>
+                                            <a href="{{ product.get_absolute_url }}">
+                                                {{ product.name|truncatewords:"2" }}
+                                            </a>
+                                        </h4>
+                                        <span class="product-qty">Qty: {{ item.quantity }}</span>
+                                    </div>
+                                </td>
+                                <td class="price-col">
+                                    ${{ item.get_cost|floatformat:"2" }}
+                                </td>
+                            </tr>
+                            {% endwith %}
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td>Total: </td>
+                                <td>${{ order.get_total_cost_after_discount }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="padding: 0;">
+                                    <a href="{% url 'orders:cancel_pending_order' order.id %}" class="btn btnD1 w-100">
+                                        Cancel the Order
+                                    </a>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for new address -->
+<div class="modal fade bd-example-modal-lg" id="newAddressModal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Add New Address</h5>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="addressModalForm">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="form-group col-12 col-lg-12">
+                            {{ address_form.full_name|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-lg-3 mb-0">
+                            {{ address_form.country_code|as_crispy_field }}
+                        </div>
+                        <div class="form-group col-lg-5 mb-0">
+                            {{ address_form.phone|as_crispy_field }}
+                        </div>
+                        <div class="form-group col-lg-4 mb-0">
+                            {{ address_form.pin_code|as_crispy_field }}
+                        </div>
+                    </div>
+                    {{ address_form.line_1|as_crispy_field }}
+                    {{ address_form.line_2|as_crispy_field }}
+                    <div class="form-row">
+                        <div class="form-group col-lg-3 mb-0">
+                            {{ address_form.landmark|as_crispy_field }}
+                        </div>
+                        <div class="form-group col-lg-4 mb-0">
+                            {{ address_form.city|as_crispy_field }}
+                        </div>
+                        <div class="form-group col-lg-5 mb-0">
+                            {{ address_form.state|as_crispy_field }}
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btnD1" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btnD2" id="newAddressBtn">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    $(document).ready(function () {
+
+        var showModal = "{{ modal }}";
+        if (showModal == "True") {
+            $("#newAddressModal").modal('show');
+        }
+
+        // $(".address-box").first().addClass('active');
+        $(".address-box").on("click", function (e) {
+            $(this).parent().siblings().children().removeClass('active');
+            $(this).addClass('active');
+        });
+
+        $("#newAddressModal input").addClass("form-control-sm");
+        $("#newAddressModal select").addClass("form-control-sm");
+
+        $(".remove-btn a").on('click', function (e) {
+            e.preventDefault();
+            var adr_id = parseInt($(this).data("address-id"));
+
+            $.post({
+                url: "{% url 'accounts:address_delete_ajax' %}",
+                data: {
+                    'adr_id': adr_id,
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data['status'] == 'ok') {
+                        console.log('address deleted');
+                        $("#address-box-" + adr_id).parent().remove();
+                        alert("Address Deleted successfully!")
+                    } else {
+                        alert('Sorry, Something went wrong!');
+                    }
+                }
+            })
+        });
+
+        $("#newAddressBtn").on('click', function () {
+            $("#addressModalForm").submit();
+        });
+
+        $("#newAddressModal").on('shown.bs.modal', function () {
+            $('.header-nav').css('display', 'none');
+        });
+        $("#newAddressModal").on('hidden.bs.modal', function () {
+            $('.header-nav').css('display', 'block');
+        });
+    });
+        // add onchange validation for fields
+        // id_phone 
+        // id_pin_code
+</script>
+{% endblock %}
