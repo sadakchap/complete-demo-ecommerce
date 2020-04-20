@@ -1,44 +1,284 @@
 {% extends "base.html" %}
 {% load static %}
 {% block extrastyles %}
-    <link rel="stylesheet" href="{% static 'css/products.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+	<link rel="stylesheet" href="{% static 'css/smoothproducts/smoothproducts.css' %}">
+    <style>
+        .sp-wrap {
+            max-width: 100%;
+            max-height: 70vh;
+            overflow-y: hidden;
+        }
+    
+        .sp-wrap img {
+            max-width: inherit;
+        }
+    </style>
 {% endblock %}
 {% block page_title %} Maa Shop-Products {% endblock %}
 {% block content %}
-    <div class="wrapper">
-        <nav id="sidebar">
-            <h4>categories</h4>
-            <ul>
-                    <li><a href="{% url 'products:product_list' %}">All</a></li>
-                {% for cat in categories %}
-                    <li><a href="{{ cat.get_absolute_url }}">{{ cat }}</a></li>
-                {% endfor %}
-            </ul>
-        </nav>
-        <div class="content">
-            <div class="products-box">
-                {% if category %} <h4>{{ category.name }} Products </h4>{% endif %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3">
+                <ul>
+                    <li>Category</li>
+                    {% for cat in categories %}
+                        <li>{{ cat }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-lg-9">
                 <div class="row">
                     {% for product in products %}
-                        <div class="item">
-                            <div class="card"  style="width: 20rem;">
-                                <a href="{{ product.get_absolute_url }}">
-                                    <img src="{% if product.image %}{{ product.image.url }}{% endif %}" class="card-img-top product-card-img" alt="{{ product.name}}">
+                    <div class="col-6 col-md-4 col-lg-4">
+                        <div class="product-default product">
+                            <div class="product-image">
+                                <a href="{{ product.get_absolute_url }}" class="product-image-anchor">
+                                    <img src="{{ product.image.url }}" alt="">
                                 </a>
-                                <div class="card-body">
-                                    <a href="{{ product.get_absolute_url }}">
-                                        <h5 class="card-title product-card-name">{{ product.name|title|truncatewords:7 }}</h5>
+                                {% if product.discount_percent %}
+                                <div class="discount-label">{{ product.discount_percent }}% Off</div>
+                                {% endif %}
+                                <div class="add-to-cart-btn-icon">
+                                    <a href="add-to-cart/" class="add-to-cart-btn-icon-anchor" data-product-id="{{ product.id }}">
+                                        <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                                     </a>
-                                    <p class="card-text"><small class="text-muted">${{ product.price }}</small></p>
+                                </div>
+                                <div class="quick-view-btn"><a href="" class="quick-view-btn-anchor"
+                                        data-product-id="{{ product.id }}">Quick view</a></div>
+                            </div>
+                            <div class="product-detail">
+                                <div class="product-category">
+                                    <a href="{{ product.category.get_absolute_url }}"
+                                        class="product-category-anchor">{{ product.category }}</a>
+                                </div>
+                                <div class="product-title">
+                                    <a href="{{ product.get_absolute_url }}"
+                                        class="product-title-anchor">{{ product.name|truncatewords:4 }}</a>
+                                </div>
+                                <div class="ratings-container">
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star"></span>
+                                </div>
+                                <div class="product-price">
+                                    <span class="old-price">${{ product.price }}</span>
+                                    <span class="discount-price">${{ product.get_price }}</span>
                                 </div>
                             </div>
                         </div>
+                    </div>
                     {% endfor %}
                 </div>
             </div>
         </div>
     </div>
-    
+
     {% include 'paginator.html' with products=products %}
+
+
+    <!-- product quick view modal start -->
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-lg" id="product-quick-view" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">A Quick View</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-12">
+                            <div class="modal-product-image">
+                                <div class="sp-wrap">
     
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-12">
+                            <div class="modal-product-detail">
+                                <div class="modal-product-name">
+                                    <h4>Short Product Name</h4>
+                                </div>
+                                <div class="ratings-container">
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star"></span>
+                                </div>
+                                <div class="product-price mt-2">
+                                    <span class="old-price">$59.99</span>
+                                    <span class="discount-price">$49.99</span>
+                                </div>
+                                <div class="modal-product-desc mt-3">
+                                    <p></p>
+                                </div>
+                                <div class="modal-product-actions mt-2">
+                                    <button type="submit" class="btn btnD1" id="quick-modal-cart" data-product-id=""
+                                        data-quick-modal="true">
+                                        <i class="fa fa-shopping-bag" aria-hidden="true"></i> Add to cart
+                                    </button>
+                                    <a href="#" class="btn btnD1 px-3" id="quick-modal-wishlist"><i
+                                            class="fa fa-heart"></i></a>
+                                </div>
+                                <div class="modal-product-share mt-2">
+                                    <ul class="share-actions">
+                                        <li>Share: </li>
+                                        <li><a href=""><i class="fa fa-facebook"></i></a></li>
+                                        <li><a href=""><i class="fa fa-twitter"></i></a></li>
+                                        <li><a href=""><i class="fa fa-pinterest"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- product quick view modal end -->
+    
+{% endblock %}
+{% block extra_scripts %}
+    <script src="{% static 'js/smoothproducts/smoothproducts.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            // product list catalog script
+            $('.add-to-cart-btn-icon-anchor , #quick-modal-cart').on("click", function (e) {
+                e.preventDefault();
+                var product_id = parseInt($(this).data("product-id"));
+                var is_modal = $(this).data("quick-modal");
+                var btn = $(this);
+                if (is_modal) {
+                    console.log("before", $(this).text());
+                }
+
+                $.post({
+                    url: "{% url 'cart:cart_add_ajax' %}",
+                    data: {
+                        product_id: product_id,
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.added == 'ok') {
+                            $('#nav-cart-length').text(data.cart_length);
+                            $('#nav-cart-total').text('$' + data.cart_total);
+                            $("#nav-cart-total-items").text(data.cart_length + " items");
+
+                            added_item = data.added_item;
+                            var itemDiv = $("#nav-cart-list").find("#cart-item-" + data.added_item.cart_item_product_id);
+                            if (itemDiv.length) {
+                                var detailDiv = itemDiv.children().first()
+                                detailDiv.find('span').text(data.added_item.quantity + ' x $' + data.added_item.price);
+                            } else {
+                                // adding new list divElement
+                                itemDiv = $('#new-nav-cart-item').html();
+                                $("#nav-cart-list").children().last().prev().before(itemDiv);
+
+                                var addedElementDiv = $("#nav-cart-list").children().eq(-3).children();
+
+                                addedElementDiv.css('display', 'flex');
+                                addedElementDiv.attr("id", "cart-item-" + added_item.cart_item_product_id);
+
+                                var detailDiv = addedElementDiv.children().first();
+                                detailDiv.find('.product-name').attr("href", added_item.product_url);
+                                detailDiv.find('.product-name').text(added_item.product_name); // added truncated string
+                                detailDiv.find('span').text(added_item.quantity + ' x $' + added_item.price);
+
+                                var imageDiv = addedElementDiv.children().last();
+                                imageDiv.find('img').attr("src", added_item.product_image_url);
+                                imageDiv.find(".nav-cart-item-remove").data("product-id", added_item.cart_item_product_id);
+
+                                // if from quick view modal
+                            }
+
+                            if ($("#empty-cart").length) {
+                                $("#empty-cart").remove();
+                            }
+
+
+                            if (is_modal) {
+                                btn.html('<i class="fa fa-shopping-bag" aria-hidden="true"></i> Go to cart');
+                            }
+                            alert('Item Added to cart!!');
+                        } else {
+                            alert(data.error_message);
+                        }
+
+                    }
+                });
+            });
+
+            $('.quick-view-btn-anchor').on("click", function (e) {
+                e.preventDefault();
+                var product_id = parseInt($(this).data("product-id"));
+
+                $.ajax({
+                    url: '/product-detail/ajax/' + product_id + '/',
+                    data: {},
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.status == 'ok') {
+                            var item = data.item;
+                            var image_list = JSON.parse(data.product_image_list);
+
+                            // add item data to modal html
+                            var modalProductImage = $('.modal-body').children().first().children().first();
+                            // add product image
+                            modalProductImage.find('.sp-wrap').append($('<a/>', {
+                                'href': item.product_image_url
+                            }).append($('<img/>', {
+                                'src': item.product_image_url
+                            })));
+
+                            // add product other images
+                            for (const img_url of image_list) {
+                                modalProductImage.find('.sp-wrap').append($('<a/>', {
+                                    'href': img_url
+                                }).append($('<img/>', {
+                                    'src': img_url
+                                })));
+                            }
+                            // add detail info
+                            var modalProductDetail = $('.modal-body').children().last().children().last();
+                            modalProductDetail.find(".modal-product-name h4").text(item.product_name);
+                            modalProductDetail.find(".old-price").text('$' + item.product_original_price);
+                            modalProductDetail.find(".discount-price").text('$' + item.product_current_price);
+                            modalProductDetail.find(".modal-product-desc p").text(item.product_short_desc);
+
+                            modalProductDetail.find("#quick-modal-cart").data("product-id", item.product_id);
+                            modalProductDetail.find("#quick-modal-wishlist").data("product-id", item.product_id);
+
+                            $('.sp-wrap').smoothproducts();
+                            $('#product-quick-view').modal('show');
+                        } else {
+                            alert(data.error_message);
+                        }
+                    }
+                })
+            });
+
+            $("#product-quick-view").on("click", "#quick-modal-cart", function (e) {
+                e.preventDefault();
+            });
+
+            $('#product-quick-view').on('hidden.bs.modal', function () {
+                $('#quick-modal-cart').html('<i class="fa fa-shopping-bag" aria-hidden="true"></i> Add to cart')
+                $('.sp-wrap').html('')
+                $(".header-nav").css('display', 'block');
+            });
+            $('#product-quick-view').on('shown.bs.modal', function () {
+                $(".header-nav").css('display', 'none');
+            })
+
+
+        });
+    </script>
 {% endblock %}

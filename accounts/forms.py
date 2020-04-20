@@ -51,7 +51,7 @@ class UserLoginForm(forms.Form):
     password    = forms.CharField(widget=forms.PasswordInput)
 
     def clean(self, *args, **kwargs):
-        email   = self.cleaned_data.get('email')
+        email   = self.cleaned_data.get('email').lower()
         pswd    = self.cleaned_data.get('password')
         if email and pswd:
             user_qs = User.objects.filter(email=email)
@@ -80,7 +80,7 @@ class UserRegisterForm(forms.ModelForm):
         qs      = User.objects.filter(email=email)
         if qs.exists():
             raise forms.ValidationError('Email already taken, perhaps Logging In!')
-        return email
+        return email.lower()
 
     def clean_password2(self):
         pwrd1 = self.cleaned_data.get('password1')

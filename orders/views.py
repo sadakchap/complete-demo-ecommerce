@@ -15,7 +15,7 @@ from .models import OrderItem, Order
 from cart.cart import Cart
 from .tasks import send_invoice_order
 from coupons.models import Coupon
-from .decorators import no_active_order, no_active_order_redirect
+from .decorators import no_active_order_redirect
 
 # Create your views here.
 

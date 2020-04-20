@@ -20,6 +20,11 @@ DONE ---- 8. On order payment successfull show user its transaction id(simply ju
             show the msg accordingly).
 DONE ---- 9. have a button to go "home" page of payment_status.html page
 DONE ---- 27. responsive payment_status.html
+DONE ---- 27. case insensitive email field
+DONE ---- 26. if somehow transaction fails then order will have paid=False,
+ remind the user to complete the payment or delete the order on 
+ every page, like showing messages
+
 
 3. design home page...
 4. check product stock before addding to stock and while creating order also.
@@ -35,9 +40,9 @@ DONE ---- 27. responsive payment_status.html
 22. show network error on ajax if there is
 24. fix images height on cart_detail.html
 
-26. if somehow transaction fails then order will have paid=False,
- remind the user to complete the payment or delete the order on 
- every page, like showing messages
+28. prevent csrf_exmpt logging out user after payment or display message
+29. product filter list, based on category, price brand
+30. have filter options on product list
 
 CANCELLED---14. django serialize django model object
 CANCELLED---5. design payment success and cancel html pages
